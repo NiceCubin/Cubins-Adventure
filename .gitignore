@@ -1,5 +1,7 @@
 # Custom
 data/
+package-lock.json
+package.json
 
 # Logs
 logs
