@@ -2,6 +2,7 @@
 data/
 package.json
 package-lock.json
+.replit
 
 # Logs
 logs
