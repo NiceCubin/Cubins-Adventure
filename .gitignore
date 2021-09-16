@@ -1,8 +1,10 @@
 # Custom
-data/
 package.json
 package-lock.json
 .replit
+
+config.json
+src/data/
 
 # Logs
 logs
