@@ -1,16 +1,15 @@
-const Discord = require("discord.js");
-const keepAlive = require("../server");
-const config = require("../config.json");
+console.clear();
 
-const client = new Discord.Client({
+const keepAlive = require("../server.js");
+const config = require("../config.json");
+const Client = require("./structures/Client.js");
+
+const client = new Client({
+  prefix: config.prefix,
   intents: config.intents,
-  presence: config.presence,
-  allowedMentions: config.allowedMentions
+  allowedMentions: config.allowedMentions,
+  presence: config.presence
 });
 
-client.on("ready", () => {
-  console.log(`Ready: ${client.user.tag} | Servers: ${client.guilds.cache.size}`);
-})
-
 keepAlive();
-client.login(process.env.TOKEN);
+client.start(process.env.TOKEN);
