@@ -1,8 +1,6 @@
-console.clear();
-
-const keepAlive = require("../server.js");
+const keepAlive = require("../server");
 const config = require("../config.json");
-const Client = require("./structures/Client.js");
+const Client = require("./structures/Client");
 
 const client = new Client({
   prefix: config.prefix,
@@ -10,6 +8,6 @@ const client = new Client({
   allowedMentions: config.allowedMentions,
   presence: config.presence
 });
-
+require("./utils/default")
 keepAlive();
 client.start(process.env.TOKEN);
