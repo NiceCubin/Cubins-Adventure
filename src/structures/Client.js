@@ -22,7 +22,7 @@ class Client extends Discord.Client {
 
     this.removeAllListeners();
     
-		fs.readdirSync("./src/events").filter(file => file.endsWith(".js")).forEach(file => {
+    fs.readdirSync("./src/events").filter(file => file.endsWith(".js")).forEach(file => {
       const event = require(`../events/${file}`);	
       this.on(event.event, event.run.bind(null, this));
     });                                                      
