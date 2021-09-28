@@ -1,5 +1,5 @@
 const Command = require("../structures/Command");
-const embeds = require("../utils/embeds")
+const embeds = require("../utils/embeds");
 
 module.exports = new Command({
   name: "help",

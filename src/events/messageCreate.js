@@ -9,7 +9,7 @@ module.exports = new Event("messageCreate", (client, message) => {
   const has_permissions = message.member.permissions.has(command.permission);
 
   if (!has_permissions) {
-    return message.reply("You don't have the permissions required to use this command!")
+    return message.reply("You don't have the permissions required to use this command!");
   }
 
   command?.run(message, args, client);

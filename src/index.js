@@ -8,6 +8,6 @@ const client = new Client({
   allowedMentions: config.allowedMentions,
   presence: config.presence
 });
-require("./utils/default")
+
 keepAlive();
 client.start(process.env.TOKEN);
