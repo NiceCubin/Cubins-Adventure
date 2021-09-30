@@ -1,7 +1,8 @@
 class Event {
-  constructor(event, runFunction) {
+  constructor(event, runFunction, once) {
     this.event = event;
-    this.run = runFunction;	
+    this.once = once ?? false;
+    this.run = runFunction;
   }
 }
 
