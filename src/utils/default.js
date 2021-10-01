@@ -17,7 +17,7 @@ module.exports = {
     return text;
   },
 
-  toCamelCase(text) {
+  getCamelCase(text) {
     text = text.toLowerCase();
     
     text = text.replaceAll(/[^a-zA-Z0-9]+(.)/g, (match, char) => char.toUpperCase());

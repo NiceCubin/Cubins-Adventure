@@ -35,7 +35,7 @@ class Client extends Discord.Client {
     
     fs.readdirSync("./src/events").forEach(file => {
       const event = require(`../events/${file}`);
-
+      
       if (event.once) {
         this.once(event.event, event.run.bind(null, this));
       } else {

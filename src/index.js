@@ -10,6 +10,5 @@ const client = new Client({
   presence: config.presence
 });
 
-
 keepAlive();
 client.start(process.env.TOKEN);
