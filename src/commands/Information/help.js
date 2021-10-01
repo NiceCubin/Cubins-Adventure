@@ -62,7 +62,7 @@ module.exports = new Command({
 **Description:** ${command.description}
 **Aliases:** \`${command.triggers.join(", ")}\`
 **Cooldown:** ${command.cooldown} Second${command.cooldown === 1 ? "" : "s"}
-${command.permissions.length !== 0 ? `**Permissions Needed:** \`${command.permissions.map(perm => toCamelCase(perm.replace("_", " ")))}\`` : ""}
+${command.permissions.length !== 0 ? `**Permissions Needed:** \`${command.permissions.map(perm => toCamelCase(perm.replaceAll("_", " ")))}\`` : ""}
             `,
             color: 0xff00ff,
             fields: [
