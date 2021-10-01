@@ -1,8 +1,9 @@
 const Command = require("../../structures/Command");
 
 module.exports = new Command({
-  name: "ping",
+  triggers: ["ping"],
   description: "shows the ping of the bot.",
+  cooldown: 2,
   async run(message, args, client) {
     await message.reply(`My ping is ${client.ws.ping}ms.`);
   }

@@ -1,9 +1,12 @@
 const Command = require("../../structures/Command");
 const embeds = require("../../utils/embeds");
+const { toCamelCase, getEmojiIcon } = require("../../utils/default");
 
 module.exports = new Command({
-  name: "help",
+  triggers: ["help", "?"],
   description: "shows help for commands.",
+  cooldown: 5,
+  usage: "[command | category]",
   async run(message, args, client) {
     const helpName = args[1];
     categoryNames = client.categories
@@ -30,23 +33,21 @@ module.exports = new Command({
         });
       });
       
-      return await message.reply({embeds: [embed]});
+      return await message.reply({ embeds: [embed] });
     }
 
     for (const cat of categoryNames) {
       if (cat.toLowerCase() === helpName.toLowerCase()) {
         const category = client.categories.get(cat);
       
-        return await message.reply({embeds: [
+        return await message.reply({ embeds: [
           {
             title: `${client.emojis.cache.get(category.emojiID)} ${category.name} Commands`,
             description: `\`${category.commands.map(cmd => cmd.name).join(", ")}\``,
             color: 0xff00ff,
-            footer: {
-              text: `use '${client.prefix} ${require(__filename).name} [command]' for command info`
-            }
+            footer: { text: `use '${client.prefix}${require(__filename).name} [command]' for command info` }
           }
-        ]});
+        ] });
       }
     }
     
@@ -54,19 +55,26 @@ module.exports = new Command({
       if (cmd.toLowerCase() === helpName.toLowerCase()) {
         const command = client.commands.get(cmd);
       
-        return await message.reply({embeds: [
+        return await message.reply({ embeds: [
           {
-            title: "Command Help Placeholder",
-            description: "temporarily blank",
+            title: `Command: \`${client.prefix}${command.name}\``,
+            description: `
+**Description:** ${command.description}
+**Aliases:** \`${command.triggers.join(", ")}\`
+**Cooldown:** ${command.cooldown} Second${command.cooldown === 1 ? "" : "s"}
+${command.permissions.length !== 0 ? `**Permissions Needed:** \`${command.permissions.map(perm => toCamelCase(perm.replace("_", " ")))}\`` : ""}
+            `,
             color: 0xff00ff,
-            footer: {
-              text: `use '${client.prefix} ${require(__filename).name} [command]' for command info`
-            }
+            fields: [
+              { name: "Usage:", value: `\`${client.prefix}${command.name}${command.usage != null ? ` ${command.usage}` : ""}\`` }
+            ],
+            author: { name: command.category.name, icon_url: getEmojiIcon(client.emojis.cache.get(command.category.emojiID))},
+            footer: { text: "usage syntax: <required> [optional]" }
           }
-        ]});
+        ] });
       }
     }
 
-    return await message.reply({embeds: [embeds.invalid(`No Command or Command Category named \`${helpName}\`.`)]});
+    return await message.reply({ embeds: [embeds.invalid(`No Command or Command Category named \`${helpName}\`.`)] });
   }
 });
