@@ -9,11 +9,11 @@ module.exports = new Command({
   usage: "[command | category]",
   async run(message, args, client) {
     const helpName = args[1];
-    categoryNames = client.categories
+    
+    const categoryNames = client.categories
       .map(cat => cat.name)
       .sort(cat => cat.name);
-    
-    commandNames = client.commands
+    const commandNames = client.commands
       .map(cmd => cmd.name)
       .sort(cmd => cmd.name);
     
