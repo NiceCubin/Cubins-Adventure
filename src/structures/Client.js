@@ -14,7 +14,6 @@ class Client extends Discord.Client {
     let commands = []
     const categories = fs.readdirSync("./src/commands").map(cat => {
       const category = require(`../commands/${cat}`);
-      category.name = cat;
       category.commands = fs.readdirSync(`./src/commands/${cat}`)
         .filter(file => file !== "index.js")
         .map(file => {
