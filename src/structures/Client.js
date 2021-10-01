@@ -11,20 +11,22 @@ class Client extends Discord.Client {
   }
 
   start(token) {
-    const categoryFiles = fs.readdirSync("./src/commands");
-    const categories = categoryFiles.map(cat => require(`../commands/${cat}`));
-    let commands = [];
-    
-    categoryFiles.forEach(categoryFile => {
-      const commandFiles = fs.readdirSync(`./src/commands/${categoryFile}`).filter(file => file !== "index.js");
-      const categoryCommands = commandFiles.map(file => {
-        const command = require(`../commands/${categoryFile}/${file}`);
-        command.category = require(`../commands/${categoryFile}`);
-        
-        return command;
-      });
-     
-      commands = commands.concat(Array.from(categoryCommands));
+    let commands = []
+    const categories = fs.readdirSync("./src/commands").map(cat => {
+      const category = require(`../commands/${cat}`);
+      category.name = cat;
+      category.commands = fs.readdirSync(`./src/commands/${cat}`)
+        .filter(file => file !== "index.js")
+        .map(file => {
+          const command = require(`../commands/${cat}/${file}`);
+          command.category = category;
+
+          return command;
+        });
+
+      commands = commands.concat(category.commands);
+
+      return category;
     });
 
     categories.forEach(cat => this.categories.set(cat.name, cat));
