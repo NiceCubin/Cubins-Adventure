@@ -1,6 +1,5 @@
 const Discord = require("discord.js");
 const fs = require("fs");
-const path = require("path");
 
 class Client extends Discord.Client {
   constructor(options) {
@@ -17,12 +16,11 @@ class Client extends Discord.Client {
     let commands = [];
     
     categoryFiles.forEach(categoryFile => {
-      const categoryDir = `./src/commands/${categoryFile}`
-      const commandFiles = fs.readdirSync(categoryDir).filter(file => file !== "index.js");
+      const commandFiles = fs.readdirSync(`./src/commands/${categoryFile}`).filter(file => file !== "index.js");
       const categoryCommands = commandFiles.map(file => {
         const command = require(`../commands/${categoryFile}/${file}`);
-        command.category = require(path.relative(__dirname, categoryDir));
-      
+        command.category = require(`../commands/${categoryFile}`);
+        
         return command;
       });
      
@@ -36,13 +34,13 @@ class Client extends Discord.Client {
     
     fs.readdirSync("./src/events").forEach(file => {
       const event = require(`../events/${file}`);
-      
+
       if (event.once) {
         this.once(event.event, event.run.bind(null, this));
       } else {
         this.on(event.event, event.run.bind(null, this));
       }
-    });                                                      
+    });
 
     this.login(token);
   }
