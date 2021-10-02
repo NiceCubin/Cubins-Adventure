@@ -1,7 +1,8 @@
+const dedent = require('dedent-js');
+
 const Command = require('../../structures/Command');
 const embeds = require('../../utils/embeds');
 const { getCamelCase, getEmojiIcon } = require('../../utils/default');
-const dedent = require('dedent-js');
 
 module.exports = new Command({
   triggers: ['help', '?'],
@@ -10,13 +11,6 @@ module.exports = new Command({
   usage: '[command | category]',
   async run(message, args, client) {
     const helpName = args[1];
-    
-    const categoryNames = client.categories
-      .map(cat => cat.name)
-      .sort(cat => cat.name);
-    const commandNames = client.commands
-      .map(cmd => cmd.name)
-      .sort(cmd => cmd.name);
     
     if (helpName == null) {
       const embed = {
@@ -37,9 +31,10 @@ module.exports = new Command({
       return await message.reply({ embeds: [embed] });
     }
 
-    for (const cat of categoryNames) {
-      if (cat.toLowerCase() === helpName.toLowerCase()) {
-        const category = client.categories.get(cat);
+    
+    for (const cat in client.categories.values()) {
+      if (cat.name.toLowerCase() === helpName.toLowerCase()) {
+        const category = cat;
       
         return await message.reply({ embeds: [
           {
@@ -52,9 +47,10 @@ module.exports = new Command({
       }
     }
     
-    for (const cmd of commandNames) {
-      if (cmd.toLowerCase() === helpName.toLowerCase()) {
-        const command = client.commands.get(cmd);
+    for (const cmd of client.commands.values()) {
+      if (cmd.triggers.map(cmd => 
+      cmd.toLowerCase()).includes(helpName[0].toLowerCase())) {
+        const command = cmd;
       
         return await message.reply({ embeds: [
           {
@@ -63,7 +59,7 @@ module.exports = new Command({
                          `**Description:** ${command.description}
                          **Aliases:** \`${command.triggers.join(', ')}\`
                          **Cooldown:** ${command.cooldown === 0 ? 'none' : command.cooldown}${command.cooldown === 0 ? '' : ` Second${command.cooldown === 1 ? '' : 's'}`}
-                         ${command.permissions.length !== 0 ? `**Permissions Needed:** \`${command.permissions.map(perm => getCamelCase(perm.replaceAll('_', ' ')))}\`` : ''}`,
+                         ${command.permissions.length === 0 ? '' : `**Permissions Needed:** \`${command.permissions.map(perm => getCamelCase(perm.replaceAll('_', ' ')))}\``}`,
             color: 0xff00ff,
             fields: [
               { name: 'Usage:', value: `\`${client.prefix}${command.name}${command.usage != null ? ` ${command.usage}` : ''}\`` }
