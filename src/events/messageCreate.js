@@ -10,8 +10,7 @@ module.exports = new Event({
       message.channel === message.author
     ) return;
     
-    const args = message.content.substring(client.prefix.length).split(/\s+/g);
-    
+    const args = message.content.substring(client.prefix.length).split(/\s+/g);  
     const command = client.commands.find(cmd => cmd.triggers.map(trig => trig.toLowerCase()).includes(args[0].toLowerCase()));
 
     if (command == null) return;

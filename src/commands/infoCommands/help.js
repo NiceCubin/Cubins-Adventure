@@ -1,6 +1,7 @@
 const Command = require('../../structures/Command');
 const embeds = require('../../utils/embeds');
 const { getCamelCase, getEmojiIcon } = require('../../utils/default');
+dedent = require('dedent-js');
 
 module.exports = new Command({
   triggers: ['help', '?'],
@@ -58,12 +59,11 @@ module.exports = new Command({
         return await message.reply({ embeds: [
           {
             title: `Command: \`${client.prefix}${command.name}\``,
-            description: `
-**Description:** ${command.description}
-**Aliases:** \`${command.triggers.join(', ')}\`
-**Cooldown:** ${command.cooldown} Second${command.cooldown === 1 ? '' : 's'}
-${command.permissions.length !== 0 ? `**Permissions Needed:** \`${command.permissions.map(perm => getCamelCase(perm.replaceAll('_', ' ')))}\`` : ''}
-            `,
+            description: dedent
+                         `**Description:** ${command.description}
+                         **Aliases:** \`${command.triggers.join(', ')}\`
+                         **Cooldown:** ${command.cooldown} Second${command.cooldown === 1 ? '' : 's'}
+                         ${command.permissions.length !== 0 ? `**Permissions Needed:** \`${command.permissions.map(perm => getCamelCase(perm.replaceAll('_', ' ')))}\`` : ''}`,
             color: 0xff00ff,
             fields: [
               { name: 'Usage:', value: `\`${client.prefix}${command.name}${command.usage != null ? ` ${command.usage}` : ''}\`` }

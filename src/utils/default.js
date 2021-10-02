@@ -1,6 +1,6 @@
 module.exports = {
   getEmojiIcon(emoji) {
-    if (emoji == undefined) return
+    if (emoji == undefined) return;
     
     if (emoji.animated) {
       return `https://cdn.discordapp.com/emojis/${emoji.id}.gif`;
@@ -9,11 +9,11 @@ module.exports = {
     return `https://cdn.discordapp.com/emojis/${emoji.id}.png`
     },
 
-  getCamelCase(text) {
-    text = text.toLowerCase();
+  getCamelCase(str) {
+    str = str.toLowerCase();
     
-    text = text.replaceAll(/[^a-zA-Z0-9]+(.)/g, (match, char) => char.toUpperCase());
+    str = str.replaceAll(/[^a-zA-Z0-9]+(.)/g, (match, char) => char.toUpperCase());
 
-    return text;
+    return str;
   }
 }
