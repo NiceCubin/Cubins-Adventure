@@ -7,9 +7,11 @@ module.exports = new Event({
     if (!message.content.startsWith(client.prefix) || message.author.bot || message.channel === message.author) return;
     
     const args = message.content.substring(client.prefix.length).split(/\s+/g);
-    let command = client.commands.find(cmd => cmd.name.toLowerCase() === args[0].toLowerCase());
+    
+    const checkCommand = client.commands.find(cmd => cmd.name.toLowerCase() === args[0].toLowerCase());
+    const checkAlias = client.commands.find(cmd => cmd.triggers.map(trig => trig.toLowerCase() === args[0].toLowerCase()));
 
-    command = command ?? client.commands.find(cmd => cmd.triggers.map(trig => trig.toLowerCase() === args[0].toLowerCase()));
+    const command = checkCommand ?? checkAlias;
 
     if (command == null) return;
 
