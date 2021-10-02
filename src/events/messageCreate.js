@@ -8,10 +8,7 @@ module.exports = new Event({
     
     const args = message.content.substring(client.prefix.length).split(/\s+/g);
     
-    const checkCommand = client.commands.find(cmd => cmd.name.toLowerCase() === args[0].toLowerCase());
-    const checkAlias = client.commands.find(cmd => cmd.triggers.map(trig => trig.toLowerCase() === args[0].toLowerCase()));
-
-    const command = checkCommand ?? checkAlias;
+    const command = client.commands.find(cmd => cmd.triggers.map(trig => trig.toLowerCase()).includes(args[0].toLowerCase()));
 
     if (command == null) return;
 
