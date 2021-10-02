@@ -8,14 +8,6 @@ module.exports = {
     
     return `https://cdn.discordapp.com/emojis/${emoji.id}.png`
     },
-  
-  cleanText(text) {
-    const formatChars = ["\\", "*", "_", "`", ">"];
-    
-    formatChars.forEach(char => text = text.replaceAll(char, `\\${char}`));
-    
-    return text;
-  },
 
   getCamelCase(text) {
     text = text.toLowerCase();

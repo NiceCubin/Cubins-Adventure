@@ -1,9 +1,9 @@
-const Event = require("../structures/Event");
+const Event = require('../structures/Event');
 
 module.exports = new Event({
-  event: "ready",
+  event: 'ready',
   once: true,
   run(client) {
-    console.log("\x1b[35m%s\x1b[0m",`Ready: ${client.user.tag}\nServers: ${client.guilds.cache.size}`);
+    console.log('\x1b[35m%s\x1b[0m',`Ready: ${client.user.tag}\nServers: ${client.guilds.cache.size}`);
   }
 });

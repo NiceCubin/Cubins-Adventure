@@ -1,12 +1,12 @@
-const Command = require("../../structures/Command");
-const embeds = require("../../utils/embeds");
-const { toCamelCase, getEmojiIcon } = require("../../utils/default");
+const Command = require('../../structures/Command');
+const embeds = require('../../utils/embeds');
+const { getCamelCase, getEmojiIcon } = require('../../utils/default');
 
 module.exports = new Command({
-  triggers: ["help", "?"],
-  description: "shows help for commands.",
+  triggers: ['help', '?'],
+  description: 'shows help for commands.',
   cooldown: 5,
-  usage: "[command | category]",
+  usage: '[command | category]',
   async run(message, args, client) {
     const helpName = args[1];
     
@@ -19,7 +19,7 @@ module.exports = new Command({
     
     if (helpName == null) {
       const embed = {
-        title: "Cubin's Adventure Command Help",
+        title: 'Cubin\'s Adventure Command Help',
         description: `\`${client.prefix}${require(__filename).name} [category]\``,
         color: 0xff00ff,
         fields: []
@@ -43,7 +43,7 @@ module.exports = new Command({
         return await message.reply({ embeds: [
           {
             title: `${client.emojis.cache.get(category.emojiID)} ${category.name} Commands`,
-            description: `\`${category.commands.map(cmd => cmd.name).join(", ")}\``,
+            description: `\`${category.commands.map(cmd => cmd.name).join(', ')}\``,
             color: 0xff00ff,
             footer: { text: `use '${client.prefix}${require(__filename).name} [command]' for command info` }
           }
@@ -60,16 +60,16 @@ module.exports = new Command({
             title: `Command: \`${client.prefix}${command.name}\``,
             description: `
 **Description:** ${command.description}
-**Aliases:** \`${command.triggers.join(", ")}\`
-**Cooldown:** ${command.cooldown} Second${command.cooldown === 1 ? "" : "s"}
-${command.permissions.length !== 0 ? `**Permissions Needed:** \`${command.permissions.map(perm => getCamelCase(perm.replaceAll("_", " ")))}\`` : ""}
+**Aliases:** \`${command.triggers.join(', ')}\`
+**Cooldown:** ${command.cooldown} Second${command.cooldown === 1 ? '' : 's'}
+${command.permissions.length !== 0 ? `**Permissions Needed:** \`${command.permissions.map(perm => getCamelCase(perm.replaceAll('_', ' ')))}\`` : ''}
             `,
             color: 0xff00ff,
             fields: [
-              { name: "Usage:", value: `\`${client.prefix}${command.name}${command.usage != null ? ` ${command.usage}` : ""}\`` }
+              { name: 'Usage:', value: `\`${client.prefix}${command.name}${command.usage != null ? ` ${command.usage}` : ''}\`` }
             ],
             author: { name: command.category.name, icon_url: getEmojiIcon(client.emojis.cache.get(command.category.emojiID))},
-            footer: { text: "usage syntax: <required> [optional]" }
+            footer: { text: 'usage syntax: <required> [optional]' }
           }
         ] });
       }

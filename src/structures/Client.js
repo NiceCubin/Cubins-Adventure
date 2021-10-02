@@ -1,5 +1,5 @@
-const Discord = require("discord.js");
-const fs = require("fs");
+const Discord = require('discord.js');
+const fs = require('fs');
 
 class Client extends Discord.Client {
   constructor(options) {
@@ -11,8 +11,8 @@ class Client extends Discord.Client {
   }
 
   start(token) {
-    let commands = []
-    const categories = fs.readdirSync("./src/commands").map(cat => {
+    let commands = [];
+    const categories = fs.readdirSync('./src/commands').map(cat => {
       const category = require(`../commands/${cat}`);
       category.commands = fs.readdirSync(`./src/commands/${cat}`)
         .filter(file => file !== "index.js")
@@ -33,7 +33,7 @@ class Client extends Discord.Client {
 
     this.removeAllListeners();
     
-    fs.readdirSync("./src/events").forEach(file => {
+    fs.readdirSync('./src/events').forEach(file => {
       const event = require(`../events/${file}`);
       
       if (event.once) {

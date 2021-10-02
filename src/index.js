@@ -1,7 +1,7 @@
-const keepAlive = require("../server");
-const config = require("../config.json");
+const keepAlive = require('../server');
+const config = require('../config.json');
 
-const Client = require("./structures/Client");
+const Client = require('./structures/Client');
 
 const client = new Client({
   prefix: config.prefix,
