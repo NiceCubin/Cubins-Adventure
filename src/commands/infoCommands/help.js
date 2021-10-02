@@ -1,7 +1,7 @@
 const Command = require('../../structures/Command');
 const embeds = require('../../utils/embeds');
 const { getCamelCase, getEmojiIcon } = require('../../utils/default');
-dedent = require('dedent-js');
+const dedent = require('dedent-js');
 
 module.exports = new Command({
   triggers: ['help', '?'],
@@ -62,7 +62,7 @@ module.exports = new Command({
             description: dedent
                          `**Description:** ${command.description}
                          **Aliases:** \`${command.triggers.join(', ')}\`
-                         **Cooldown:** ${command.cooldown} Second${command.cooldown === 1 ? '' : 's'}
+                         **Cooldown:** ${command.cooldown === 0 ? 'none' : command.cooldown}${command.cooldown === 0 ? '' : ` Second${command.cooldown === 1 ? '' : 's'}`}
                          ${command.permissions.length !== 0 ? `**Permissions Needed:** \`${command.permissions.map(perm => getCamelCase(perm.replaceAll('_', ' ')))}\`` : ''}`,
             color: 0xff00ff,
             fields: [
