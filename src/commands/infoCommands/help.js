@@ -48,8 +48,7 @@ module.exports = new Command({
     }
     
     for (const cmd of client.commands.values()) {
-      if (cmd.triggers.map(cmd => 
-      cmd.toLowerCase()).includes(helpName[0].toLowerCase())) {
+      if (cmd.triggers.map(cmd => cmd.toLowerCase()).includes(helpName[0].toLowerCase())) {
         const command = cmd;
       
         return await message.reply({ embeds: [
