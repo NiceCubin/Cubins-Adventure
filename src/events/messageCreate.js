@@ -6,8 +6,10 @@ module.exports = new Event({
   run(client, message) {
     if (!message.content.startsWith(client.prefix) || message.author.bot || message.channel === message.author) return;
     
-    const args = message.content.substring(client.prefix.length).split(/\s+/);
-    const command = client.commands.find(cmd => cmd.name.toLowerCase() === args[0].toLowerCase());
+    const args = message.content.substring(client.prefix.length).split(/\s+/g);
+    let command = client.commands.find(cmd => cmd.name.toLowerCase() === args[0].toLowerCase());
+
+    command = command ?? client.commands.find(cmd => cmd.triggers.map(trig => trig.toLowerCase() === args[0].toLowerCase()));
 
     if (command == null) return;
 
