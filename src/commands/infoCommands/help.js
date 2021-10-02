@@ -9,13 +9,13 @@ module.exports = new Command({
   description: 'shows help for commands.',
   cooldown: 5,
   usage: '[command | category]',
-  async run(message, args, client) {
-    const helpName = args[1];
+  async run(message, args, command, client) {
+    const helpName = args[0];
     
     if (helpName == null) {
       const embed = {
         title: 'Cubin\'s Adventure Command Help',
-        description: `\`${client.prefix}${require(__filename).name} [category]\``,
+        description: `\`${client.prefix}${command.name} [category]\``,
         color: 0xff00ff,
         fields: []
       }
@@ -48,7 +48,7 @@ module.exports = new Command({
     }
     
     for (const cmd of client.commands.values()) {
-      if (cmd.triggers.map(cmd => cmd.toLowerCase()).includes(helpName[0].toLowerCase())) {
+      if (cmd.triggers.map(cmd => cmd.toLowerCase()).includes(helpName.toLowerCase())) {
         const command = cmd;
       
         return await message.reply({ embeds: [
@@ -61,7 +61,7 @@ module.exports = new Command({
               ${command.permissions.length === 0 ? '' : `**Permissions Needed:** \`${command.permissions.map(perm => getCamelCase(perm.replaceAll('_', ' ')))}\``}`,
             color: 0xff00ff,
             fields: [
-              { name: 'Usage:', value: `\`${client.prefix}${command.name}${command.usage != null ? ` ${command.usage}` : ''}\`` }
+              { name: 'Usage:', value: `\`${client.prefix}${command.name}${command.usage == null ? '' : ` ${command.usage}`}\`` }
             ],
             author: { name: command.category.name, icon_url: getEmojiIcon(client.emojis.cache.get(command.category.emojiID))},
             footer: { text: 'usage syntax: <required> [optional]' }
