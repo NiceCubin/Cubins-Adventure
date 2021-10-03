@@ -33,7 +33,7 @@ module.exports = new Command({
 
     
     for (const cat in client.categories.values()) {
-      const isCategory = cat.name.toLowerCase() === helpName.toLowerCase()
+      const isCategory = cat.name.toLowerCase() === helpName.toLowerCase();
       
       if (isCategory) {
         const category = cat;
@@ -50,7 +50,7 @@ module.exports = new Command({
     }
     
     for (const cmd of client.commands.values()) {
-      const hasCommand = cmd.triggers.map(cmd => cmd.toLowerCase()).includes(helpName.toLowerCase())
+      const hasCommand = cmd.triggers.map(cmd => cmd.toLowerCase()).includes(helpName.toLowerCase());
       
       if (hasCommand) {
         const command = cmd;
