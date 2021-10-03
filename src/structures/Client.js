@@ -8,6 +8,7 @@ class Client extends Discord.Client {
     this.prefix = options.prefix;
     this.categories = new Discord.Collection();
     this.commands = new Discord.Collection();
+    this.cooldowns = new Map()
   }
 
   start(token) {

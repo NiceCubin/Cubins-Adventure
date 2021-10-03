@@ -1,3 +1,5 @@
+const Discord = require('discord.js');
+
 const Event = require('../structures/Event');
 const embeds = require('../utils/embeds');
 
@@ -16,11 +18,32 @@ module.exports = new Event({
     const command = client.commands.find(cmd => cmd.triggers.map(trig => trig.toLowerCase()).includes(commandName.toLowerCase()));
 
     if (command == null) return;
-    
-    const has_permissions = message.member.permissions.has(command.permissions);
 
-    if (!has_permissions) {
-      return message.reply({ embeds: [embeds.invalid('You do not have the permissions required to use this command.')] });
+    if (!client.cooldowns.has(command.name)) {
+      client.cooldowns.set(command.name, new Discord.Collection());
+    }
+
+    const timeStamps = client.cooldowns.get(command.name);
+    const currentTime = Date.now();
+    const cooldownTime = command.cooldown * 1000;
+
+    if (timeStamps.has(message.author.id)) {
+      const expirationTime = cooldownTime + timeStamps.get(message.author.id);
+
+      if (currentTime < expirationTime) {
+        const timeLeft = (expirationTime - currentTime) / 1000;
+
+        return message.reply({ embeds: [embeds.invalid(`You are on cooldown for \`${command.name}\` for ${timeLeft.toFixed(1)} more seconds.`)] });
+      }
+    }
+    
+    timeStamps.set(message.author.id, currentTime);
+    setTimeout(() => timeStamps.delete(message.author.id), cooldownTime); 
+    
+    const hasPermissions = message.member.permissions.has(command.permissions);
+
+    if (!hasPermissions) {
+      return message.reply({ embeds: [embeds.invalid(`You do not have the permissions required to use \`${command.name}\`.`)] });
   }
 
     command.run(message, args, command, client);
