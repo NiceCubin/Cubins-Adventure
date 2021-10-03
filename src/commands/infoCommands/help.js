@@ -1,3 +1,4 @@
+
 const dedent = require('dedent-js');
 
 const Command = require('../../structures/Command');
