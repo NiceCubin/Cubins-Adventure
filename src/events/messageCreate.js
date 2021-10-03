@@ -12,7 +12,7 @@ module.exports = new Event({
     
     const args = message.content.substring(client.prefix.length).split(/\s+/g);
     
-    const commandName = args.shift()
+    const commandName = args.shift();
     const command = client.commands.find(cmd => cmd.triggers.map(trig => trig.toLowerCase()).includes(commandName.toLowerCase()));
 
     if (command == null) return;
