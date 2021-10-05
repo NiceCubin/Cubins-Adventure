@@ -4,6 +4,7 @@ const Client = require('./structures/Client');
 
 const client = new Client({
   prefix: config.prefix,
+  devs: config.devs,
   intents: config.intents,
   allowedMentions: config.allowedMentions,
   presence: config.presence

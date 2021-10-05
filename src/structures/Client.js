@@ -6,6 +6,7 @@ class Client extends Discord.Client {
     super(options);
 
     this.prefix = options.prefix;
+    this.devs = options.devs;
     this.categories = new Discord.Collection();
     this.commands = new Discord.Collection();
     this.cooldowns = new Map();

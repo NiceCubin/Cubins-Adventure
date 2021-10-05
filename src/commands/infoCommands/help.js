@@ -30,20 +30,17 @@ module.exports = new Command({
       
       return await message.reply({ embeds: [embed] });
     }
-
     
-    for (const cat in client.categories.values()) {
+    for (const cat of client.categories.values()) {
       const isCategory = cat.name.toLowerCase() === helpName.toLowerCase();
       
-      if (isCategory) {
-        const category = cat;
-      
+      if (isCategory) {   
         return await message.reply({ embeds: [
           {
-            title: `${client.emojis.cache.get(category.emojiID)} ${category.name} Commands`,
-            description: `\`${category.commands.map(cmd => cmd.name).join(', ')}\``,
+            title: `${client.emojis.cache.get(cat.emojiID)} ${cat.name} Commands`,
+            description: `\`${cat.commands.map(cmd => cmd.name).join(', ')}\``,
             color: 0xff00ff,
-            footer: { text: `use '${client.prefix}${require(__filename).name} [command]' for command info` }
+            footer: { text: `use '${client.prefix}${command.name} [command]' for command info` }
           }
         ] });
       }
@@ -53,21 +50,19 @@ module.exports = new Command({
       const hasCommand = cmd.triggers.map(cmd => cmd.toLowerCase()).includes(helpName.toLowerCase());
       
       if (hasCommand) {
-        const command = cmd;
-      
         return await message.reply({ embeds: [
           {
-            title: `Command: \`${client.prefix}${command.name}\``,
+            title: `Command: \`${client.prefix}${cmd.name}\``,
             description: dedent
-              `**Description:** ${command.description}
-              **Aliases:** \`${command.triggers.join(', ')}\`
-              **Cooldown:** ${command.cooldown === 0 ? 'none' : command.cooldown}${command.cooldown === 0 ? '' : ` Second${command.cooldown === 1 ? '' : 's'}`}
-              ${command.permissions.length === 0 ? '' : `**Permissions Needed:** \`${command.permissions.map(perm => getCamelCase(perm.replaceAll('_', ' ')))}\``}`,
+              `**Description:** ${cmd.description}
+              **Aliases:** \`${cmd.triggers.join(', ')}\`
+              **Cooldown:** ${cmd.cooldown === 0 ? 'none' : cmd.cooldown}${cmd.cooldown === 0 ? '' : ` Second${cmd.cooldown === 1 ? '' : 's'}`}
+              ${cmd.permissions.length === 0 ? '' : `**Permissions Needed:** \`${cmd.permissions.map(perm => getCamelCase(perm.replaceAll('_', ' ')))}\``}`,
             color: 0xff00ff,
             fields: [
-              { name: 'Usage:', value: `\`${client.prefix}${command.name}${command.usage == null ? '' : ` ${command.usage}`}\`` }
+              { name: 'Usage:', value: `\`${client.prefix}${cmd.name}${cmd.usage == null ? '' : ` ${cmd.usage}`}\`` }
             ],
-            author: { name: command.category.name, icon_url: getEmojiIcon(client.emojis.cache.get(command.category.emojiID))},
+            author: { name: cmd.category.name, icon_url: getEmojiIcon(client.emojis.cache.get(cmd.category.emojiID))},
             footer: { text: 'usage syntax: <required> [optional]' }
           }
         ] });
