@@ -9,6 +9,8 @@ module.exports = new Command({
   description: 'shows help for commands.',
   cooldown: 5,
   usage: '[command | category]',
+  permissions: [],
+  devOnly: false,
   async run(message, args, command, client) {
     const helpName = args[0];
     
@@ -20,10 +22,12 @@ module.exports = new Command({
         fields: []
       }
       
-        client.categories.forEach(category => {
+      client.categories.forEach(cat => {
+        if (cat.hidden) return;
+        
         embed.fields = embed.fields.concat({
-          name: `${client.emojis.cache.get(category.emojiID)} ${category.name}`,
-          value: category.description,
+          name: `${client.emojis.cache.get(cat.emojiID)} ${cat.name}`,
+          value: cat.description,
           inline: false
         });
       });
@@ -31,44 +35,54 @@ module.exports = new Command({
       return await message.reply({ embeds: [embed] });
     }
     
-    for (const cat of client.categories.values()) {
+    for (const [, cat] of client.categories) {
+      const isDev = client.devs.includes(message.author.id.toString());
       const isCategory = cat.name.toLowerCase() === helpName.toLowerCase();
       
-      if (isCategory) {   
-        return await message.reply({ embeds: [
-          {
-            title: `${client.emojis.cache.get(cat.emojiID)} ${cat.name} Commands`,
-            description: `\`${cat.commands.map(cmd => cmd.name).join(', ')}\``,
-            color: 0xff00ff,
-            footer: { text: `use '${client.prefix}${command.name} [command]' for command info` }
-          }
-        ] });
-      }
+      if (
+        cat.hidden &&
+        !isDev ||
+        !isCategory
+      ) continue;
+      
+      return await message.reply({ embeds: [
+        {
+          title: `${client.emojis.cache.get(cat.emojiID)} ${cat.name} Commands`,
+          description: `\`${cat.commands.map(cmd => cmd.name).join(', ')}\``,
+          color: 0xff00ff,
+          footer: { text: `use '${client.prefix}${command.name} [command]' for command info` }
+        }
+      ] });
     }
     
-    for (const cmd of client.commands.values()) {
+    for (const [, cmd] of client.commands) {
+      const isDev = client.devs.includes(message.author.id.toString());
       const hasCommand = cmd.triggers.map(cmd => cmd.toLowerCase()).includes(helpName.toLowerCase());
       
-      if (hasCommand) {
-        return await message.reply({ embeds: [
-          {
-            title: `Command: \`${client.prefix}${cmd.name}\``,
-            description: dedent
-              `**Description:** ${cmd.description}
-              **Aliases:** \`${cmd.triggers.join(', ')}\`
-              **Cooldown:** ${cmd.cooldown === 0 ? 'none' : cmd.cooldown}${cmd.cooldown === 0 ? '' : ` Second${cmd.cooldown === 1 ? '' : 's'}`}
-              ${cmd.permissions.length === 0 ? '' : `**Permissions Needed:** \`${cmd.permissions.map(perm => getCamelCase(perm.replaceAll('_', ' ')))}\``}`,
-            color: 0xff00ff,
-            fields: [
-              { name: 'Usage:', value: `\`${client.prefix}${cmd.name}${cmd.usage == null ? '' : ` ${cmd.usage}`}\`` }
-            ],
-            author: { name: cmd.category.name, icon_url: getEmojiIcon(client.emojis.cache.get(cmd.category.emojiID))},
-            footer: { text: 'usage syntax: <required> [optional]' }
-          }
-        ] });
-      }
+      if (
+        cmd.devOnly &&
+        !isDev ||
+        !hasCommand
+      ) continue;
+      
+      return await message.reply({ embeds: [
+        {
+          title: `Command: \`${client.prefix}${cmd.name}\``,
+          description: dedent
+            `**Description:** ${cmd.description}
+            **Aliases:** \`${cmd.triggers.join(', ')}\`
+            **Cooldown:** ${cmd.cooldown === 0 ? 'none' : cmd.cooldown}${cmd.cooldown === 0 ? '' : ` Second${cmd.cooldown === 1 ? '' : 's'}`}
+            ${cmd.permissions.length === 0 ? '' : `**Permissions Needed:** \`${cmd.permissions.map(perm => getCamelCase(perm.replaceAll('_', ' ')))}\``}`,
+          color: 0xff00ff,
+          fields: [
+            { name: 'Usage:', value: `\`${client.prefix}${cmd.name}${cmd.usage === '' ? cmd.usage : ` ${cmd.usage}`}\`` }
+          ],
+          author: { name: cmd.category.name, icon_url: getEmojiIcon(client.emojis.cache.get(cmd.category.emojiID))},
+          footer: { text: 'usage syntax: <required> [optional]' }
+        }
+      ] });
     }
 
-    return await message.reply({ embeds: [embeds.invalid(`No Command or Command Category named \`${helpName}\`.`)] });
+    return await message.reply({ embeds: [embeds.invalid(`No Command or Category named \`${helpName}\` found.`)] });
   }
 });

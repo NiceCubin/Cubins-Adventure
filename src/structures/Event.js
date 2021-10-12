@@ -1,7 +1,7 @@
 class Event {
   constructor(options) {
     this.event = options.event;
-    this.once = options.once ?? false;
+    this.once = options.once;
     this.run = options.run;
   }
 }

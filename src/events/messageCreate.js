@@ -6,11 +6,9 @@ const embeds = require('../utils/embeds');
 module.exports = new Event({
   event: 'messageCreate',
   run(client, message) {
-    stringAuthorID = message.author.id.toString();
-    
     if (
       !message.content.startsWith(client.prefix) ||
-      message.author.bot ||
+      
       !message.guild
     ) return;
     
@@ -18,13 +16,15 @@ module.exports = new Event({
     
     const commandName = args.shift();
     const command = client.commands.find(cmd => cmd.triggers.map(trig => trig.toLowerCase()).includes(commandName.toLowerCase()));
-    
-    if (command == null) return;
 
-    const invalidDev = command.devOnly && !client.devs.includes(stringAuthorID);
+    const authorID = message.author.id.toString();
+    const invalidDev = command?.devOnly && !client.devs.includes(authorID);
     
-    if (invalidDev) return;
-
+    if (
+      command == null ||
+      invalidDev
+    ) return;
+    
     if (!client.cooldowns.has(command.name)) {
       client.cooldowns.set(command.name, new Discord.Collection());
     }
@@ -33,8 +33,8 @@ module.exports = new Event({
     const currentTime = Date.now();
     const cooldownTime = command.cooldown * 1000;
 
-    if (timeStamps.has(stringAuthorID)) {
-      const expirationTime = cooldownTime + timeStamps.get(stringAuthorID);
+    if (timeStamps.has(authorID)) {
+      const expirationTime = cooldownTime + timeStamps.get(authorID);
 
       if (currentTime < expirationTime) {
         const timeLeft = (expirationTime - currentTime) / 1000;
@@ -43,8 +43,8 @@ module.exports = new Event({
       }
     }
     
-    timeStamps.set(stringAuthorID, currentTime);
-    setTimeout(() => timeStamps.delete(stringAuthorID), cooldownTime); 
+    timeStamps.set(authorID, currentTime);
+    setTimeout(() => timeStamps.delete(authorID), cooldownTime); 
     
     const hasPermissions = message.member.permissions.has(command.permissions);
 
@@ -54,4 +54,4 @@ module.exports = new Event({
 
     command.run(message, args, command, client);
   }
-});
+}, false);
