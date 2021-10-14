@@ -38,8 +38,10 @@ module.exports = new Event({
 
       if (currentTime < expirationTime) {
         const timeLeft = (expirationTime - currentTime) / 1000;
+       const minsLeft = Math.floor(timeLeft / 60)
+       const secsLeft = timeLeft - (minsLeft * 60)
 
-        return message.reply({ embeds: [embeds.invalid(`You are on cooldown for \`${command.name}\` for ${timeLeft.toFixed(1)} more seconds.`)] });
+        return message.reply({ embeds: [embeds.invalid(`You are on cooldown for \`${command.name}\` for${minsLeft > 0 ? ` ${minsLeft} minutes and` : ''} ${minsLeft === 0 && secsLeft < 10 ? secsLeft.toFixed(1) : Math.floor(secsLeft)} more seconds.`)] });
       }
     }
     

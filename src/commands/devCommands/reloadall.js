@@ -21,6 +21,6 @@ module.exports = new Command({
       });
     });
     
-    return await message.reply('Successfully reloaded all commands.');
+    await message.reply('Successfully reloaded all commands.');
     }
 });
