@@ -13,11 +13,13 @@ module.exports = new Command({
     const code = message.content.toString().substring(spaceIndex + 1);
 
     try {
-      var evaluation = eval(code).toString();
+      await eval(code);
     } catch(err) {
       return await message.reply({ embeds: [embeds.error(err.toString())] });
     }
     
-    await message.reply(`\`\`\`\n${evaluation}\`\`\``);
+    if (!message.deleted) {
+      await message.react('👍');
+    }
   }
 });

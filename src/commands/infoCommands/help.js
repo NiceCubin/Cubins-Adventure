@@ -21,8 +21,8 @@ module.exports = new Command({
         color: 0xff00ff,
         fields: []
       }
-      
-      client.categories.forEach(cat => {
+        
+      Array.from(client.categories.values()).reverse().forEach(cat => {
         if (cat.hidden) return;
         
         embed.fields = embed.fields.concat({
@@ -36,7 +36,7 @@ module.exports = new Command({
     }
     
     for (const [, cat] of client.categories) {
-      const isDev = client.devs.includes(message.author.id.toString());
+      const isDev = client.devs.includes(message.author.id);
       const isCategory = cat.name.toLowerCase() === helpName.toLowerCase();
       
       if (
@@ -56,7 +56,7 @@ module.exports = new Command({
     }
     
     for (const [, cmd] of client.commands) {
-      const isDev = client.devs.includes(message.author.id.toString());
+      const isDev = client.devs.includes(message.author.id);
       const hasCommand = cmd.triggers.map(cmd => cmd.toLowerCase()).includes(helpName.toLowerCase());
       
       if (

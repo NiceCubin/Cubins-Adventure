@@ -8,7 +8,7 @@ module.exports = new Event({
   run(client, message) {
     if (
       !message.content.startsWith(client.prefix) ||
-      
+      //message.author.bot ||
       !message.guild
     ) return;
     
@@ -17,8 +17,7 @@ module.exports = new Event({
     const commandName = args.shift();
     const command = client.commands.find(cmd => cmd.triggers.map(trig => trig.toLowerCase()).includes(commandName.toLowerCase()));
 
-    const authorID = message.author.id.toString();
-    const invalidDev = command?.devOnly && !client.devs.includes(authorID);
+    const invalidDev = command?.devOnly && !client.devs.includes(message.author.id);
     
     if (
       command == null ||
@@ -33,20 +32,20 @@ module.exports = new Event({
     const currentTime = Date.now();
     const cooldownTime = command.cooldown * 1000;
 
-    if (timeStamps.has(authorID)) {
-      const expirationTime = cooldownTime + timeStamps.get(authorID);
+    if (timeStamps.has(message.author.id)) {
+      const expirationTime = cooldownTime + timeStamps.get(message.author.id);
 
       if (currentTime < expirationTime) {
         const timeLeft = (expirationTime - currentTime) / 1000;
-       const minsLeft = Math.floor(timeLeft / 60)
-       const secsLeft = timeLeft - (minsLeft * 60)
+       const minsLeft = Math.floor(timeLeft / 60);
+       const secsLeft = timeLeft - (minsLeft * 60);
 
         return message.reply({ embeds: [embeds.invalid(`You are on cooldown for \`${command.name}\` for${minsLeft > 0 ? ` ${minsLeft} minutes and` : ''} ${minsLeft === 0 && secsLeft < 10 ? secsLeft.toFixed(1) : Math.floor(secsLeft)} more seconds.`)] });
       }
     }
     
-    timeStamps.set(authorID, currentTime);
-    setTimeout(() => timeStamps.delete(authorID), cooldownTime); 
+    timeStamps.set(message.author.id, currentTime);
+    setTimeout(() => timeStamps.delete(message.author.id), cooldownTime); 
     
     const hasPermissions = message.member.permissions.has(command.permissions);
 
