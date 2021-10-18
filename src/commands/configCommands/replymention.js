@@ -30,7 +30,8 @@ module.exports = new Command({
         mentions[message.author.id] = false;
         await message.reply('set to false');
         break;
-        
+
+      case null:
       case undefined:
         await message.reply(`currently ${mentions[message.author.id]}`);
         break;
