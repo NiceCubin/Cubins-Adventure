@@ -9,11 +9,12 @@ class Client extends Discord.Client {
     this.devs = options.devs;
     this.categories = new Discord.Collection();
     this.commands = new Discord.Collection();
-    this.cooldowns = new Map();
+    this.cooldowns = new Discord.Collection();
   }
 
   start(token) {
     let commands = [];
+    
     const categories = fs.readdirSync('./src/commands').map(cat => {
       const category = require(`../commands/${cat}`);
       category.commands = fs.readdirSync(`./src/commands/${cat}`)

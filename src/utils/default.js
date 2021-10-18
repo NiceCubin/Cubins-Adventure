@@ -6,7 +6,7 @@ module.exports = {
       return `https://cdn.discordapp.com/emojis/${emoji.id}.gif`;
     }
     
-    return `https://cdn.discordapp.com/emojis/${emoji.id}.png`
+    return `https://cdn.discordapp.com/emojis/${emoji.id}.png`;
     },
 
   getCamelCase(str) {

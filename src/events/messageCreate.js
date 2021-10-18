@@ -8,7 +8,7 @@ module.exports = new Event({
   run(client, message) {
     if (
       !message.content.startsWith(client.prefix) ||
-      //message.author.bot ||
+      message.author.bot ||
       !message.guild
     ) return;
     
@@ -17,14 +17,16 @@ module.exports = new Event({
     const commandName = args.shift();
     const command = client.commands.find(cmd => cmd.triggers.map(trig => trig.toLowerCase()).includes(commandName.toLowerCase()));
 
-    const invalidDev = command?.devOnly && !client.devs.includes(message.author.id);
+    const invalidDev = (command?.devOnly && !client.devs.includes(message.author.id));
     
     if (
       command == null ||
       invalidDev
     ) return;
+
+    const onCooldown = client.cooldowns.has(command.name);
     
-    if (!client.cooldowns.has(command.name)) {
+    if (!onCooldown) {
       client.cooldowns.set(command.name, new Discord.Collection());
     }
 
@@ -37,10 +39,13 @@ module.exports = new Event({
 
       if (currentTime < expirationTime) {
         const timeLeft = (expirationTime - currentTime) / 1000;
-       const minsLeft = Math.floor(timeLeft / 60);
-       const secsLeft = timeLeft - (minsLeft * 60);
+        const minsLeft = timeLeft / 60;
+        const secsLeft = timeLeft - (Math.floor(minsLeft) * 60);
 
-        return message.reply({ embeds: [embeds.invalid(`You are on cooldown for \`${command.name}\` for${minsLeft > 0 ? ` ${minsLeft} minutes and` : ''} ${minsLeft === 0 && secsLeft < 10 ? secsLeft.toFixed(1) : Math.floor(secsLeft)} more seconds.`)] });
+        const displayMins = `${Math.floor(minsLeft)} minutes and`;
+        const displaySecs = `${timeLeft < 10 ? secsLeft.toFixed(1) : Math.round(secsLeft)} more seconds`;
+        
+        return message.reply({ embeds: [embeds.invalid(`You are on cooldown for \`${command.name}\` for${Math.floor(minsLeft) > 0 ? ` ${displayMins}` : ''} ${displaySecs}.`)] });
       }
     }
     

@@ -35,13 +35,12 @@ module.exports = new Command({
       return await message.reply({ embeds: [embed] });
     }
     
-    for (const [, cat] of client.categories) {
+    for (const cat of client.categories.values()) {
       const isDev = client.devs.includes(message.author.id);
       const isCategory = cat.name.toLowerCase() === helpName.toLowerCase();
       
       if (
-        cat.hidden &&
-        !isDev ||
+        (cat.hidden && !isDev) ||
         !isCategory
       ) continue;
       
@@ -55,14 +54,13 @@ module.exports = new Command({
       ] });
     }
     
-    for (const [, cmd] of client.commands) {
+    for (const cmd of client.commands.values()) {
       const isDev = client.devs.includes(message.author.id);
-      const hasCommand = cmd.triggers.map(cmd => cmd.toLowerCase()).includes(helpName.toLowerCase());
+      const isCommand = cmd.triggers.map(cmd => cmd.toLowerCase()).includes(helpName.toLowerCase());
       
       if (
-        cmd.devOnly &&
-        !isDev ||
-        !hasCommand
+        (cmd.devOnly && !isDev) ||
+        !isCommand
       ) continue;
       
       return await message.reply({ embeds: [
@@ -72,7 +70,7 @@ module.exports = new Command({
             `**Description:** ${cmd.description}
             **Aliases:** \`${cmd.triggers.join(', ')}\`
             **Cooldown:** ${cmd.cooldown === 0 ? 'none' : cmd.cooldown}${cmd.cooldown === 0 ? '' : ` Second${cmd.cooldown === 1 ? '' : 's'}`}
-            ${cmd.permissions.length === 0 ? '' : `**Permissions Needed:** \`${cmd.permissions.map(perm => getCamelCase(perm.replaceAll('_', ' ')))}\``}`,
+            ${cmd.permissions.length === 0 ? '' : `**Permissions Required:** \`${cmd.permissions.map(perm => getCamelCase(perm.replaceAll('_', ' ')))}\``}`,
           color: 0xff00ff,
           fields: [
             { name: 'Usage:', value: `\`${client.prefix}${cmd.name}${cmd.usage === '' ? cmd.usage : ` ${cmd.usage}`}\`` }
