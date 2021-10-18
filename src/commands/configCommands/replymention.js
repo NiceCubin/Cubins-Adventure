@@ -14,33 +14,34 @@ module.exports = new Command({
   async run(message, args, command, client) {
     const boolean = args[0]?.toLowerCase();
 
-    if (boolean == null) {
-      if (mentions[message.author.id] == null) {
-        mentions[message.author.id] = false;
-      }
+    if (boolean == null && mentions[message.author.id] == null) {
+      mentions[message.author.id] = false;
     }
 
+    let content
     switch (boolean) {
       case "true":
         mentions[message.author.id] = true;
-        await message.reply('set to true');
+        content = 'set to true';
         break;
         
       case "false":
         mentions[message.author.id] = false;
-        await message.reply('set to false');
+        content = 'set to false';
         break;
 
       case null:
       case undefined:
-        await message.reply(`currently ${mentions[message.author.id]}`);
+        content = `currently ${mentions[message.author.id]}`;
         break;
         
       default:
-        await message.reply({ embeds: [embeds.invalid('You must input a boolean!')] });
+        content = { embeds: [embeds.invalid('You must input a boolean!')] }
     }
     
     fs.writeFileSync('./src/database/replymentions.json', JSON.stringify(mentions, null, 4));
+    
+    return await message.reply(content);
     
   }
 });

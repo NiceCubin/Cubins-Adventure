@@ -8,6 +8,6 @@ module.exports = new Command({
   permissions: [],
   devOnly: false,
   async run(message, args, command, client) {
-    await message.reply(`My ping is ${client.ws.ping}ms.`);
+    return await message.reply(`My ping is ${client.ws.ping}ms.`);
   }
 });

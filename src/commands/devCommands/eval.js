@@ -19,7 +19,7 @@ module.exports = new Command({
     }
     
     if (!message.deleted) {
-      await message.react('👍');
+      return await message.react('👍');
     }
   }
 });
