@@ -2,6 +2,7 @@ const fs = require('fs');
 
 const Command = require('../../structures/Command');
 const embeds = require('../../utils/embeds');
+const mentions = require('../../database/replymentions.json');
 
 module.exports = new Command({
   triggers: ['replymention', 'replyping'],
@@ -11,8 +12,6 @@ module.exports = new Command({
   permissions: [],
   devOnly: false,
   async run(message, args, command, client) {
-    const mentions = require('../../database/replymentions.json');
-    
     const boolean = args[0]?.toLowerCase();
 
     if (boolean == null) {
