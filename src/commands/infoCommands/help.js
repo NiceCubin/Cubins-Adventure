@@ -14,7 +14,7 @@ module.exports = new Command({
   async run(message, args, command, client) {
     const helpName = args[0];
     
-    if (helpName == null) {
+    if (helpName === undefined) {
       const embed = {
         title: 'Cubin\'s Adventure Command Help',
         description: `\`${client.prefix}${command.name} [category]\``,
@@ -22,7 +22,9 @@ module.exports = new Command({
         fields: []
       }
         
-      Array.from(client.categories.values()).reverse().forEach(cat => {
+      categoriesReversed = Array.from(client.categories.values()).reverse();
+      
+      categoriesReversed.forEach(cat => {
         if (cat.hidden) return;
         
         embed.fields = embed.fields.concat({

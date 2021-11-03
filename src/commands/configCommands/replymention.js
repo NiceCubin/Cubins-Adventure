@@ -14,7 +14,7 @@ module.exports = new Command({
   async run(message, args, command, client) {
     const boolean = args[0]?.toLowerCase();
 
-    if (boolean == null && mentions[message.author.id] == null) {
+    if (boolean === undefined && mentions[message.author.id] === undefined) {
       mentions[message.author.id] = false;
     }
 
@@ -30,7 +30,6 @@ module.exports = new Command({
         content = 'set to false';
         break;
 
-      case null:
       case undefined:
         content = `currently ${mentions[message.author.id]}`;
         break;

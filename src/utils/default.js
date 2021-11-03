@@ -1,6 +1,6 @@
 module.exports = {
   getEmojiIcon(emoji) {
-    if (emoji == undefined) return;
+    if (emoji == null) return;
     
     if (emoji.animated) {
       return `https://cdn.discordapp.com/emojis/${emoji.id}.gif`;

@@ -9,7 +9,7 @@ class Client extends Discord.Client {
     this.devs = options.devs;
     this.categories = new Discord.Collection();
     this.commands = new Discord.Collection();
-    this.cooldowns = new Discord.Collection();
+    this.cooldowns = new Map();
   }
 
   start(token) {
