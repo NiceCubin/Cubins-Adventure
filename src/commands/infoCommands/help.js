@@ -18,8 +18,8 @@ module.exports = new Command({
       const embed = {
         title: 'Cubin\'s Adventure Command Help',
         description: `\`${client.prefix}${command.name} [category]\``,
-        color: 0xff00ff,
-        fields: []
+        fields: [],
+        color: 0xff00ff
       }
         
       categoriesReversed = Array.from(client.categories.values()).reverse();
@@ -50,8 +50,8 @@ module.exports = new Command({
         {
           title: `${client.emojis.cache.get(cat.emojiID)} ${cat.name} Commands`,
           description: `\`${cat.commands.map(cmd => cmd.name).join(', ')}\``,
-          color: 0xff00ff,
-          footer: { text: `use '${client.prefix}${command.name} [command]' for command info` }
+          footer: { text: `use '${client.prefix}${command.name} [command]' for command info` },
+          color: 0xff00ff
         }
       ] });
     }
@@ -73,12 +73,12 @@ module.exports = new Command({
             **Aliases:** \`${cmd.triggers.join(', ')}\`
             **Cooldown:** ${cmd.cooldown === 0 ? 'none' : cmd.cooldown}${cmd.cooldown === 0 ? '' : ` Second${cmd.cooldown === 1 ? '' : 's'}`}
             ${cmd.permissions.length === 0 ? '' : `**Permissions Required:** \`${cmd.permissions.map(perm => getCamelCase(perm.replaceAll('_', ' ')))}\``}`,
-          color: 0xff00ff,
           fields: [
             { name: 'Usage:', value: `\`${client.prefix}${cmd.name}${cmd.usage === '' ? cmd.usage : ` ${cmd.usage}`}\`` }
           ],
           author: { name: cmd.category.name, icon_url: getEmojiIcon(client.emojis.cache.get(cmd.category.emojiID))},
-          footer: { text: 'usage syntax: <required> [optional]' }
+          footer: { text: 'usage syntax: <required> [optional]' },
+          color: 0xff00ff
         }
       ] });
     }
