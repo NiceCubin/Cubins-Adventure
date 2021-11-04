@@ -11,7 +11,7 @@ module.exports = new Command({
   permissions: [],
   devOnly: true,
   async run(message, args, command, client) {
-    client.commands.clear()
+    client.commands.clear();
     fs.readdirSync('./src/commands').forEach(cat => {
       fs.readdirSync(`./src/commands/${cat}`).forEach(cmd => {
         delete require.cache[require.resolve(`../../commands/${cat}/${cmd}`)];
