@@ -9,7 +9,7 @@ module.exports = new Command({
   description: 'shows help for commands.',
   cooldown: 5,
   usage: ['[command | category]'],
-  permissions: ["SEND_MESSAGES"],
+  permissions: [],
   devOnly: false,
   async run(message, args, command, client) {
     const helpName = args[0];
@@ -78,7 +78,7 @@ module.exports = new Command({
             author: { name: cmd.category.name, icon_url: getEmojiIcon(client.emojis.cache.get(cmd.category.emojiID))},
             footer: { text: 'usage syntax: <required> [optional]' },
             fields: [
-              { name: 'Usage:', value: "hi" }
+              { name: 'Usage:', value: `\`${client.prefix}${[cmd.name].concat(cmd.usage).join(' ')}\`` }
             ],
             color: 0xff00ff
           }
