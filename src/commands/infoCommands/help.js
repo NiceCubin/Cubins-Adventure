@@ -74,8 +74,7 @@ module.exports = new Command({
               `**Description:** ${cmd.description}
               **Aliases:** \`${cmd.triggers.join(', ')}\`
               **Cooldown:** ${cmd.cooldown === 0 ? 'none' : cmd.cooldown}${cmd.cooldown === 0 ? '' : ` Second${cmd.cooldown === 1 ? '' : 's'}`}
-           
-   ${cmd.permissions.length === 0 ? '' : `**Permissions Required:** \`${cmd.permissions.map(perm => getCamelCase(perm.replaceAll('_', ' ')))}\``}`,
+              ${cmd.permissions.length === 0 ? '' : `**Permissions Required:** \`${cmd.permissions.map(perm => getCamelCase(perm.replaceAll('_', ' ')))}\``}`,
             author: { name: cmd.category.name, icon_url: getEmojiIcon(client.emojis.cache.get(cmd.category.emojiID))},
             footer: { text: 'usage syntax: <required> [optional]' },
             fields: [
