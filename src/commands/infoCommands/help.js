@@ -8,8 +8,8 @@ module.exports = new Command({
   triggers: ['help', '?'],
   description: 'shows help for commands.',
   cooldown: 5,
-  usage: '[command | category]',
-  permissions: [],
+  usage: ['[command | category]'],
+  permissions: ["SEND_MESSAGES"],
   devOnly: false,
   async run(message, args, command, client) {
     const helpName = args[0];
@@ -74,11 +74,11 @@ module.exports = new Command({
               `**Description:** ${cmd.description}
               **Aliases:** \`${cmd.triggers.join(', ')}\`
               **Cooldown:** ${cmd.cooldown === 0 ? 'none' : cmd.cooldown}${cmd.cooldown === 0 ? '' : ` Second${cmd.cooldown === 1 ? '' : 's'}`}
-              ${cmd.permissions.length === 0 ? '' : `**Permissions Required:** \`${cmd.permissions.map(perm => getCamelCase(perm.replaceAll('_', ' ')))}\``}`,
+              ${cmd.permissions.length === 0 ? '' : `**Permissions Required:** \`${cmd.permissions.map(perm => getCamelCase(perm))}\``}`,
             author: { name: cmd.category.name, icon_url: getEmojiIcon(client.emojis.cache.get(cmd.category.emojiID))},
             footer: { text: 'usage syntax: <required> [optional]' },
             fields: [
-              { name: 'Usage:', value: `\`${client.prefix}${cmd.name}${cmd.usage === '' ? cmd.usage : ` ${cmd.usage}`}\`` }
+              { name: 'Usage:', value: "hi" }
             ],
             color: 0xff00ff
           }

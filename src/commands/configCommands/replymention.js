@@ -8,7 +8,7 @@ module.exports = new Command({
   triggers: ['replymention', 'replyping'],
   description: 'toggles whether to mention you in a reply.',
   cooldown: 0,
-  usage: '[boolean]',
+  usage: ['[boolean]'],
   permissions: [],
   devOnly: false,
   async run(message, args, command, client) {

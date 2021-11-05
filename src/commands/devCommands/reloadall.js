@@ -7,7 +7,7 @@ module.exports = new Command({
   triggers: ['reloadall'],
   description: 'reloads all commands.',
   cooldown: 0,
-  usage: '<command>',
+  usage: ['<command>'],
   permissions: [],
   devOnly: true,
   async run(message, args, command, client) {

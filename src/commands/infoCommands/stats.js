@@ -5,7 +5,7 @@ module.exports = new Command({
   triggers: ['stats', 'botinfo'],
   description: 'shows basic statistics of the bot.',
   cooldown: 10,
-  usage: '',
+  usage: [],
   permissions: [],
   devOnly: false,
   async run(message, args, command, client) {
