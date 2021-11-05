@@ -45,14 +45,16 @@ module.exports = new Command({
         !isCategory
       ) continue;
       
-      return await message.reply({ embeds: [
-        {
-          title: `${client.emojis.cache.get(cat.emojiID)} ${cat.name} Commands`,
-          description: `\`${cat.commands.map(cmd => cmd.name).join(', ')}\``,
-          footer: { text: `use '${client.prefix}${command.name} [command]' for command info` },
-          color: 0xff00ff
-        }
-      ] });
+      return await message.reply({
+        embeds: [
+          {
+            title: `${client.emojis.cache.get(cat.emojiID)} ${cat.name} Commands`,
+            description: `\`${cat.commands.map(cmd => cmd.name).join(', ')}\``,
+            footer: { text: `use '${client.prefix}${command.name} [command]' for command info` },
+            color: 0xff00ff
+          }
+        ]
+      });
     }
     
     for (const cmd of client.commands.values()) {
@@ -64,22 +66,25 @@ module.exports = new Command({
         !isCommand
       ) continue;
       
-      return await message.reply({ embeds: [
-        {
-          title: `Command: \`${client.prefix}${cmd.name}\``,
-          description: dedent
-            `**Description:** ${cmd.description}
-            **Aliases:** \`${cmd.triggers.join(', ')}\`
-            **Cooldown:** ${cmd.cooldown === 0 ? 'none' : cmd.cooldown}${cmd.cooldown === 0 ? '' : ` Second${cmd.cooldown === 1 ? '' : 's'}`}
-            ${cmd.permissions.length === 0 ? '' : `**Permissions Required:** \`${cmd.permissions.map(perm => getCamelCase(perm.replaceAll('_', ' ')))}\``}`,
-          author: { name: cmd.category.name, icon_url: getEmojiIcon(client.emojis.cache.get(cmd.category.emojiID))},
-          footer: { text: 'usage syntax: <required> [optional]' },
-          fields: [
-            { name: 'Usage:', value: `\`${client.prefix}${cmd.name}${cmd.usage === '' ? cmd.usage : ` ${cmd.usage}`}\`` }
-          ],
-          color: 0xff00ff
-        }
-      ] });
+      return await message.reply({
+        embeds: [
+          {
+            title: `Command: \`${client.prefix}${cmd.name}\``,
+            description: dedent
+              `**Description:** ${cmd.description}
+              **Aliases:** \`${cmd.triggers.join(', ')}\`
+              **Cooldown:** ${cmd.cooldown === 0 ? 'none' : cmd.cooldown}${cmd.cooldown === 0 ? '' : ` Second${cmd.cooldown === 1 ? '' : 's'}`}
+           
+   ${cmd.permissions.length === 0 ? '' : `**Permissions Required:** \`${cmd.permissions.map(perm => getCamelCase(perm.replaceAll('_', ' ')))}\``}`,
+            author: { name: cmd.category.name, icon_url: getEmojiIcon(client.emojis.cache.get(cmd.category.emojiID))},
+            footer: { text: 'usage syntax: <required> [optional]' },
+            fields: [
+              { name: 'Usage:', value: `\`${client.prefix}${cmd.name}${cmd.usage === '' ? cmd.usage : ` ${cmd.usage}`}\`` }
+            ],
+            color: 0xff00ff
+          }
+        ]
+      });
     }
 
     return await message.reply({ embeds: [embeds.invalid(`No Command or Category named \`${helpName}\` found.`)] });

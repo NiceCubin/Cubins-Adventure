@@ -12,7 +12,7 @@ module.exports = new Event({
       !message.guild
     ) return;
     
-    const args = message.content.substring(client.prefix.length).split(/\s+/g);
+    const args = message.content.substring(client.prefix.length).split(/\s+/);
     
     const commandName = args.shift();
     const command = client.commands.find(cmd => cmd.triggers.map(trig => trig.toLowerCase()).includes(commandName.toLowerCase()));
