@@ -29,8 +29,7 @@ module.exports = new Command({
         
         embed.fields = embed.fields.concat({
           name: `${client.emojis.cache.get(cat.emojiID)} ${cat.name}`,
-          value: cat.description,
-          inline: false
+          value: cat.description
         });
       });
       
