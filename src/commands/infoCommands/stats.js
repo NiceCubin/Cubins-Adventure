@@ -13,15 +13,15 @@ module.exports = new Command({
       embeds: [
         {
           title: 'Cubin\'s Adventure Info',
-          color: 0xff00ff,
+          thumbnail: { url: client.user.avatarURL() },
           fields: [
             { name: 'Version', value: 'null' },
             { name: 'Servers', value: JSON.stringify(client.guilds.cache.size) },
             { name: 'Shards', value: 'null' },
-            { name: 'Latency', value: `${client.ws.ping}ms` },
+            { name: 'Ping', value: `${client.ws.ping}ms` },
             { name: 'Uptime', value: JSON.stringify(client.uptime) }
           ],
-          thumbnail: { url: client.user.avatarURL() }
+          color: 0xff00ff
         }
       ]
     });
