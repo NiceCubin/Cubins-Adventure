@@ -43,7 +43,7 @@ module.exports = new Event({
         const secsLeft = timeLeft - (Math.floor(minsLeft) * 60);
 
         const displayMins = `${Math.floor(minsLeft)} minutes and`;
-        const displaySecs = `${timeLeft < 10 ? secsLeft.toFixed(1) : Math.round(secsLeft)} more seconds`;
+        const displaySecs = `${timeLeft < 10 ? secsLeft.toFixed(1) : secsLeft.toFixed()} more seconds`;
         
         return message.reply({ embeds: [embeds.invalid(`You are on cooldown for \`${command.name}\` for${Math.floor(minsLeft) > 0 ? ` ${displayMins}` : ''} ${displaySecs}.`)] });
       }

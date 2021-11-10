@@ -1,6 +1,8 @@
 const Command = require('../../structures/Command');
-const embeds = require('../../utils/embeds');
 
+const embeds = require('../../utils/embeds');
+const { parseTime } = require('../../utils/default')
+;
 module.exports = new Command({
   triggers: ['stats', 'botinfo'],
   description: 'shows basic statistics of the bot.',
@@ -9,6 +11,7 @@ module.exports = new Command({
   permissions: [],
   devOnly: false,
   async run(message, args, command, client) {
+    
     await message.channel.send({
       embeds: [
         {
@@ -19,7 +22,7 @@ module.exports = new Command({
             { name: 'Servers', value: JSON.stringify(client.guilds.cache.size) },
             { name: 'Shards', value: 'null' },
             { name: 'Ping', value: `${client.ws.ping}ms` },
-            { name: 'Uptime', value: JSON.stringify(client.uptime) }
+            { name: 'Uptime', value: parseTime(client.uptime) }
           ],
           color: 0xff00ff
         }
