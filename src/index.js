@@ -8,7 +8,7 @@ const client = new Client({
   devs: config.devs,
   intents: config.intents,
   allowedMentions: config.allowedMentions,
-  presence: config.presence,
+  presence: config.presence
 });
 
 keepAlive();
