@@ -18,9 +18,8 @@ module.exports = new Command({
           title: 'Cubin\'s Adventure Info',
           thumbnail: { url: client.user.avatarURL() },
           fields: [
-            { name: 'Version', value: 'null' },
+            { name: 'Version', value: client.version },
             { name: 'Servers', value: JSON.stringify(client.guilds.cache.size) },
-            { name: 'Shards', value: 'null' },
             { name: 'Ping', value: `${client.ws.ping}ms` },
             { name: 'Uptime', value: parseTime(client.uptime) }
           ],

@@ -1,0 +1,17 @@
+{
+  "version": "",
+  "prefix": "",
+  "devs": [],
+  "intents": [],
+  "allowedMentions": {
+    "parse": []
+  },
+  "presence": {
+    "activities": [
+      {
+        "name": "",
+        "type": ""
+      }
+    ]
+  }
+}
