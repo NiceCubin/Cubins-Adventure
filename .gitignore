@@ -4,7 +4,7 @@ package-lock.json
 .replit
 
 config.json
-src/data/
+src/database/
 
 # Logs
 logs
