@@ -2,6 +2,7 @@ const Discord = require('discord.js');
 
 const Event = require('../structures/Event');
 const embeds = require('../utils/embeds');
+const { parseTime } = require('../utils/default');
 
 module.exports = new Event({
   event: 'messageCreate',
@@ -37,15 +38,10 @@ module.exports = new Event({
     if (timeStamps.has(message.author.id)) {
       const expirationTime = cooldownTime + timeStamps.get(message.author.id);
 
-      if (currentTime < expirationTime) {
-        const timeLeft = (expirationTime - currentTime) / 1000;
-        const minsLeft = timeLeft / 60;
-        const secsLeft = timeLeft - (Math.floor(minsLeft) * 60);
-
-        const displayMins = `${Math.floor(minsLeft)} minutes and`;
-        const displaySecs = `${timeLeft < 10 ? secsLeft.toFixed(1) : secsLeft.toFixed()} more seconds`;
+      if (currentTime < expirationTime) { 
+        const timeLeft = expirationTime - currentTime;
         
-        return message.reply({ embeds: [embeds.invalid(`You are on cooldown for \`${command.name}\` for${Math.floor(minsLeft) > 0 ? ` ${displayMins}` : ''} ${displaySecs}.`)] });
+        return message.reply({ embeds: [embeds.invalid(`You are still on cooldown for \`${command.name}\` for ${parseTime(timeLeft, short = true)}.`)] });
       }
     }
     

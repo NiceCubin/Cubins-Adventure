@@ -17,9 +17,11 @@ module.exports = {
     return str;
   },
 
-  parseTime(time) {
+  parseTime(time, short = false) {
     let totalSeconds = time / 1000;
     
+    const weeks = Math.floor(totalSeconds / 604800);
+    totalSeconds %= 604800;
     const days = Math.floor(totalSeconds / 86400);
     totalSeconds %= 86400;
     const hours = Math.floor(totalSeconds / 3600);
@@ -27,6 +29,14 @@ module.exports = {
     const minutes = Math.floor(totalSeconds / 60);
     const seconds = Math.floor(totalSeconds % 60);
 
-    return `${days}d ${hours}h ${minutes}m ${seconds}s`;
+    let times = [];
+        
+        if (weeks) times.push(`${weeks}${short ? 'w' : ` week${weeks == 1 ? '' : 's'}`}`);
+        if (days) times.push(`${days}${short ? 'd' : ` day${days == 1 ? '' : 's'}`}`);
+        if (hours) times.push(`${hours}${short ? 'h' : ` hour${hours == 1 ? '' : 's'}`}`);
+        if (minutes) times.push(`${minutes}${short ? 'm' : ` minute${minutes == 1 ? '' : 's'}`}`);
+    if (seconds) times.push(`${seconds}${short ? 's' : ` second${seconds == 1 ? '' : 's'}`}`);
+
+    return times.join(', ').replace(/(,\s)(?!.*,\s)/, times.length >= 3 ? ', and ' : ' and ');
   }
 }

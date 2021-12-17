@@ -1,8 +1,7 @@
 const Command = require('../../structures/Command');
 
-const embeds = require('../../utils/embeds');
-const { parseTime } = require('../../utils/default')
-;
+const { parseTime } = require('../../utils/default');
+
 module.exports = new Command({
   triggers: ['stats', 'botinfo'],
   description: 'shows basic statistics of the bot.',
@@ -11,8 +10,7 @@ module.exports = new Command({
   permissions: [],
   devOnly: false,
   async run(message, args, command, client) {
-    
-    await message.channel.send({
+    await message.reply({
       embeds: [
         {
           title: 'Cubin\'s Adventure Info',
@@ -28,4 +26,4 @@ module.exports = new Command({
       ]
     });
   }
-} );
+});
