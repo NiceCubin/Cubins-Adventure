@@ -25,9 +25,9 @@ module.exports = new Event({
       invalidDev
     ) return;
 
-    const onCooldown = client.cooldowns.has(command.name);
+    const inCooldown = client.cooldowns.has(command.name);
     
-    if (!onCooldown) {
+    if (!inCooldown) {
       client.cooldowns.set(command.name, new Discord.Collection());
     }
 
