@@ -1,8 +1,9 @@
-const Discord = require('discord.js');
+const fs = require('fs');
 
 const Event = require('../structures/Event');
 const embeds = require('../utils/embeds');
 const { parseTime } = require('../utils/default');
+const cooldowns = require('../database/cooldowns.json');
 
 module.exports = new Event({
   event: 'messageCreate',
@@ -25,18 +26,21 @@ module.exports = new Event({
       invalidDev
     ) return;
 
-    const inCooldown = client.cooldowns.has(command.name);
-    
+    const inCooldown = cooldowns.hasOwnProperty(command.name);
+
     if (!inCooldown) {
-      client.cooldowns.set(command.name, new Discord.Collection());
+      cooldowns[command.name] = {};
+      fs.writeFileSync('./src/database/cooldowns.json', JSON.stringify(cooldowns, null, 4));
     }
 
-    const timeStamps = client.cooldowns.get(command.name);
+    const timeStamps = cooldowns[command.name];
     const currentTime = Date.now();
     const cooldownTime = command.cooldown * 1000;
 
-    if (timeStamps.has(message.author.id)) {
-      const expirationTime = cooldownTime + timeStamps.get(message.author.id);
+    const hasAuthor = timeStamps.hasOwnProperty(message.author.id);
+    
+    if (hasAuthor) {
+      const expirationTime = cooldownTime + timeStamps[message.author.id];
 
       if (currentTime < expirationTime) { 
         const timeLeft = expirationTime - currentTime;
@@ -45,8 +49,13 @@ module.exports = new Event({
       }
     }
     
-    timeStamps.set(message.author.id, currentTime);
-    setTimeout(() => timeStamps.delete(message.author.id), cooldownTime); 
+    cooldowns[command.name][message.author.id] = currentTime;
+    fs.writeFileSync('./src/database/cooldowns.json', JSON.stringify(cooldowns, null, 4));
+    
+    setTimeout(() => {
+      delete cooldowns[command.name][message.author.id];
+        fs.writeFileSync('./src/database/cooldowns.json', JSON.stringify(cooldowns, null, 4));
+    }, cooldownTime); 
     
     const hasPermissions = message.member.permissions.has(command.permissions);
 
