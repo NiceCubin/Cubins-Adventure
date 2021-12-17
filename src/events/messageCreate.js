@@ -54,7 +54,7 @@ module.exports = new Event({
     
     setTimeout(() => {
       delete cooldowns[command.name][message.author.id];
-        fs.writeFileSync('./src/database/cooldowns.json', JSON.stringify(cooldowns, null, 4));
+      fs.writeFileSync('./src/database/cooldowns.json', JSON.stringify(cooldowns, null, 4));
     }, cooldownTime); 
     
     const hasPermissions = message.member.permissions.has(command.permissions);
