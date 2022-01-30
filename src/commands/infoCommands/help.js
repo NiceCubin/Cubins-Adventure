@@ -1,8 +1,6 @@
 const dedent = require('dedent-js');
 
 const Command = require('../../structures/Command');
-const embeds = require('../../utils/embeds');
-const { getCamelCase, getEmojiIcon } = require('../../utils/default');
 
 module.exports = new Command({
   triggers: ['help', '?'],
@@ -74,8 +72,8 @@ module.exports = new Command({
               `**Description:** ${cmd.description}
               **Aliases:** \`${cmd.triggers.join(', ')}\`
               **Cooldown:** ${cmd.cooldown === 0 ? 'none' : cmd.cooldown}${cmd.cooldown === 0 ? '' : ` Second${cmd.cooldown === 1 ? '' : 's'}`}
-              ${cmd.permissions.length === 0 ? '' : `**Permissions Required:** \`${cmd.permissions.map(perm => getCamelCase(perm))}\``}`,
-            author: { name: cmd.category.name, icon_url: getEmojiIcon(client.emojis.cache.get(cmd.category.emojiID))},
+              ${cmd.permissions.length === 0 ? '' : `**Permissions Required:** \`${cmd.permissions.map(perm => client.utils.getCamelCase(perm))}\``}`,
+            author: { name: cmd.category.name, icon_url: client.utils.getEmojiIcon(client.emojis.cache.get(cmd.category.emojiID))},
             footer: { text: 'usage syntax: <required> [optional]' },
             fields: [
               { name: 'Usage:', value: `\`${client.prefix}${[cmd.name].concat(cmd.usage).join(' ')}\`` }
@@ -86,6 +84,6 @@ module.exports = new Command({
       });
     }
 
-    return await message.reply({ embeds: [embeds.invalid(`No Command or Category named \`${helpName}\` found.`)] });
+    return await message.reply({ embeds: [client.utils.embeds.invalid(`No Command or Category named \`${helpName}\` found.`)] });
   }
 });

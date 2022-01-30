@@ -10,6 +10,7 @@ class Client extends Discord.Client {
     this.devs = options.devs;
     this.categories = new Discord.Collection();
     this.commands = new Discord.Collection();
+    this.utils = {};
     this.cooldowns = require('../database/cooldowns.json');
   }
 
@@ -66,9 +67,24 @@ class Client extends Discord.Client {
     });
   }
 
+  loadUtils() {
+    Object.assign(this.utils, require('../utils/default'));
+
+    this.utils.embeds = require('../utils/embeds');
+  }
+
+  unloadUtils() {
+    this.utils = {};
+
+    fs.readdirSync('./src/utils').forEach(file => {
+      delete require.cache[require.resolve(`../utils/${file}`)];
+    });
+  }
+
   start(token) {
     this.loadCommands();
     this.loadEvents();
+    this.loadUtils();
     
     this.login(token);
   }

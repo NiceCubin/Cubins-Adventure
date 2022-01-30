@@ -1,6 +1,4 @@
 const Event = require('../structures/Event');
-const embeds = require('../utils/embeds');
-const { updateJsonFile, parseTime } = require('../utils/default');
 
 module.exports = new Event({
   event: 'messageCreate',
@@ -25,7 +23,7 @@ module.exports = new Event({
     Object.keys(client.cooldowns).forEach(cmd => {
       if (client.commands.has(cmd)) {
         delete client.cooldowns[cmd];
-        updateJsonFile('./src/database/cooldowns.json', client.cooldowns);
+        client.utils.updateJsonFile('./src/database/cooldowns.json', client.cooldowns);
       }
     });
 
@@ -33,7 +31,7 @@ module.exports = new Event({
 
     if (!inCooldown) {
       client.cooldowns[command.name] = {};
-      updateJsonFile('./src/database/cooldowns.json', client.cooldowns);
+      client.utils.updateJsonFile('./src/database/cooldowns.json', client.cooldowns);
     }
 
     const timeStamps = client.cooldowns[command.name];
@@ -48,22 +46,22 @@ module.exports = new Event({
       if (currentTime < expirationTime) { 
         const timeLeft = expirationTime - currentTime;
         
-        return message.reply({ embeds: [embeds.invalid(`You are still on cooldown for \`${command.name}\` for ${parseTime(timeLeft, short = true)}.`)] });
+        return message.reply({ embeds: [client.utils.embeds.invalid(`You are still on cooldown for \`${command.name}\` for ${client.utils.parseTime(timeLeft, short = true)}.`)] });
       }
     }
     
     client.cooldowns[command.name][message.author.id] = currentTime;
-    updateJsonFile('./src/database/cooldowns.json', client.cooldowns);
+    client.utils.updateJsonFile('./src/database/cooldowns.json', client.cooldowns);
     
     setTimeout(() => {
       delete client.cooldowns[command.name][message.author.id];
-      updateJsonFile('./src/database/cooldowns.json', client.cooldowns);
+      client.utils.updateJsonFile('./src/database/cooldowns.json', client.cooldowns);
     }, cooldownTime);
     
     const hasPermissions = message.member.permissions.has(command.permissions);
 
     if (!hasPermissions) {
-      return message.reply({ embeds: [embeds.invalid(`You do not have the permissions required to use \`${command.name}\`.`)] });
+      return message.reply({ embeds: [client.utils.embeds.invalid(`You do not have the permissions required to use \`${command.name}\`.`)] });
     }
 
     command.run(message, args, command, client);
