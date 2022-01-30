@@ -41,9 +41,11 @@ class Client extends Discord.Client {
     this.commands.clear()
     
     fs.readdirSync('./src/commands').forEach(cat => {
-      fs.readdirSync(`./src/commands/${cat}`).filter(file => file !== "index.js").forEach(cmd => {
-        delete require.cache[require.resolve(`../commands/${cat}/${cmd}`)];
-      });
+      fs.readdirSync(`./src/commands/${cat}`)
+        .filter(file => file !== "index.js")
+        .forEach(cmd => {
+          delete require.cache[require.resolve(`../commands/${cat}/${cmd}`)];
+        });
     });
   }
 
