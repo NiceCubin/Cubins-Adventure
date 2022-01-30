@@ -1,9 +1,6 @@
-const fs = require('fs');
-
 const Event = require('../structures/Event');
 const embeds = require('../utils/embeds');
-const { parseTime } = require('../utils/default');
-const cooldowns = require('../database/cooldowns.json');
+const { updateJsonFile, parseTime } = require('../utils/default');
 
 module.exports = new Event({
   event: 'messageCreate',
@@ -25,15 +22,21 @@ module.exports = new Event({
       command == null ||
       invalidDev
     ) return;
+    Object.keys(client.cooldowns).forEach(cmd => {
+      if (client.commands.has(cmd)) {
+        delete client.cooldowns[cmd];
+        updateJsonFile('./src/database/cooldowns.json', client.cooldowns);
+      }
+    });
 
-    const inCooldown = cooldowns.hasOwnProperty(command.name);
+    const inCooldown = client.cooldowns.hasOwnProperty(command.name);
 
     if (!inCooldown) {
-      cooldowns[command.name] = {};
-      fs.writeFileSync('./src/database/cooldowns.json', JSON.stringify(cooldowns, null, 4));
+      client.cooldowns[command.name] = {};
+      updateJsonFile('./src/database/cooldowns.json', client.cooldowns);
     }
 
-    const timeStamps = cooldowns[command.name];
+    const timeStamps = client.cooldowns[command.name];
     const currentTime = Date.now();
     const cooldownTime = command.cooldown * 1000;
 
@@ -49,13 +52,13 @@ module.exports = new Event({
       }
     }
     
-    cooldowns[command.name][message.author.id] = currentTime;
-    fs.writeFileSync('./src/database/cooldowns.json', JSON.stringify(cooldowns, null, 4));
+    client.cooldowns[command.name][message.author.id] = currentTime;
+    updateJsonFile('./src/database/cooldowns.json', client.cooldowns);
     
     setTimeout(() => {
-      delete cooldowns[command.name][message.author.id];
-      fs.writeFileSync('./src/database/cooldowns.json', JSON.stringify(cooldowns, null, 4));
-    }, cooldownTime); 
+      delete client.cooldowns[command.name][message.author.id];
+      updateJsonFile('./src/database/cooldowns.json', client.cooldowns);
+    }, cooldownTime);
     
     const hasPermissions = message.member.permissions.has(command.permissions);
 
@@ -65,4 +68,4 @@ module.exports = new Event({
 
     command.run(message, args, command, client);
   }
-}, false);
+}, once = false);

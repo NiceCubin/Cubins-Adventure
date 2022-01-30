@@ -6,4 +6,4 @@ module.exports = new Event({
   run(client) {
     console.log('\x1b[35m%s\x1b[0m',`Ready: ${client.user.tag}\nServers: ${client.guilds.cache.size}`);
   }
-});
+}, once = true);

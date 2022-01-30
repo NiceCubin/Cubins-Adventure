@@ -10,10 +10,10 @@ class Client extends Discord.Client {
     this.devs = options.devs;
     this.categories = new Discord.Collection();
     this.commands = new Discord.Collection();
-    this.cooldowns = new Map();
+    this.cooldowns = require('../database/cooldowns.json');
   }
 
-  start(token) {
+  loadCommands() {
     let commands = [];
     
     const categories = fs.readdirSync('./src/commands').map(cat => {
@@ -34,6 +34,20 @@ class Client extends Discord.Client {
 
     categories.forEach(cat => this.categories.set(cat.name, cat));
     commands.forEach(cmd => this.commands.set(cmd.name, cmd));
+  }
+
+  unloadCommands() {
+    fs.readdirSync('./src/commands').forEach(cat => {
+      fs.readdirSync(`./src/commands/${cat}`).filter(file => file !== "index.js").forEach(cmd => {
+        this.commands.delete(cmd);
+    
+        delete require.cache[require.resolve(`../commands/${cat}/${cmd}`)];
+      });
+    });
+  }
+
+  start(token) {
+    this.loadCommands();
 
     this.removeAllListeners();
     
@@ -46,7 +60,7 @@ class Client extends Discord.Client {
         this.on(event.event, event.run.bind(null, this));
       }
     });
-
+    
     this.login(token);
   }
 }

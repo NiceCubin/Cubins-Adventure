@@ -38,5 +38,9 @@ module.exports = {
     if (seconds) times.push(`${seconds}${short ? 's' : ` second${seconds == 1 ? '' : 's'}`}`);
 
     return times.join(', ').replace(/(,\s)(?!.*,\s)/, times.length >= 3 ? ', and ' : ' and ');
+  },
+
+  updateJsonFile(file, data) {
+    require('fs').writeFileSync(file, JSON.stringify(data, null, 4));
   }
 }
