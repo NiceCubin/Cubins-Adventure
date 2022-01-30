@@ -37,20 +37,16 @@ class Client extends Discord.Client {
   }
 
   unloadCommands() {
+    this.commands.clear()
+    
     fs.readdirSync('./src/commands').forEach(cat => {
       fs.readdirSync(`./src/commands/${cat}`).filter(file => file !== "index.js").forEach(cmd => {
-        this.commands.delete(cmd);
-    
         delete require.cache[require.resolve(`../commands/${cat}/${cmd}`)];
       });
     });
   }
 
-  start(token) {
-    this.loadCommands();
-
-    this.removeAllListeners();
-    
+  loadEvents() {
     fs.readdirSync('./src/events').forEach(file => {
       const event = require(`../events/${file}`);
       
@@ -60,6 +56,19 @@ class Client extends Discord.Client {
         this.on(event.event, event.run.bind(null, this));
       }
     });
+  }
+  
+  unloadEvents() {
+    this.removeAllListeners();
+    
+    fs.readdirSync('./src/events').forEach(file => {
+      delete require.cache[require.resolve(`../events/${file}`)];
+    });
+  }
+
+  start(token) {
+    this.loadCommands();
+    this.loadEvents();
     
     this.login(token);
   }
