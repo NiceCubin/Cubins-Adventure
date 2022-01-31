@@ -70,7 +70,7 @@ class Client extends Discord.Client {
   }
 
   loadUtils() {
-    Object.assign(this.utils, require('../utils/default'));
+    Object.assign(this.utils, require('../utils/misc'));
 
     this.utils.embeds = require('../utils/embeds');
   }
