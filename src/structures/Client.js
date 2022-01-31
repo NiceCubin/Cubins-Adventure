@@ -11,6 +11,7 @@ class Client extends Discord.Client {
     this.categories = new Discord.Collection();
     this.commands = new Discord.Collection();
     this.utils = {};
+    this.assets = {};
     this.cooldowns = require('../database/cooldowns.json');
   }
 
@@ -26,7 +27,8 @@ class Client extends Discord.Client {
           command.category = category;
 
           return command;
-        });
+        })
+        .sort((a, b) => a.name.localeCompare(b.name));
 
       commands = commands.concat(category.commands);
 

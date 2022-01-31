@@ -20,9 +20,11 @@ module.exports = new Command({
         color: 0xff00ff
       }
         
-      const catsReversed = Array.from(client.categories.values()).reverse();
+      const categories = Array.from(client.categories.values());
+        
+      categories.sort((a, b) => a.name.localeCompare(b.name));
       
-      for (const cat of catsReversed) {
+      for (const cat of categories) {
         const isDev = client.devs.includes(message.author.id);
     
         if (cat.hidden && !isDev) continue;
