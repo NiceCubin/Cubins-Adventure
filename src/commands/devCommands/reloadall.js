@@ -2,7 +2,7 @@ const Command = require('../../structures/Command');
 
 module.exports = new Command({
   triggers: ['reloadall'],
-  description: 'reloads all commands, events, and utils.',
+  description: 'reloads all commands, events, utils, and assets',
   cooldown: 0,
   usage: [],
   permissions: [],
@@ -17,6 +17,9 @@ module.exports = new Command({
     client.unloadUtils();
     client.loadUtils();
 
-    return await message.reply('Successfully reloaded all commands, events, and utils.');
+    client.unloadAssets();
+    client.loadAssets();
+
+    return await message.reply('Successfully reloaded everything.');
   }
 });

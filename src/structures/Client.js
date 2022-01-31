@@ -101,6 +101,7 @@ class Client extends Discord.Client {
     this.loadCommands();
     this.loadEvents();
     this.loadUtils();
+    this.loadAssets();
     
     this.login(token);
   }
