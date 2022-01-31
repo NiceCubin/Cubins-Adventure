@@ -41,10 +41,10 @@ class Client extends Discord.Client {
 
   unloadCommands() {
     this.commands.clear()
-    
-    for (const dir of readdirSync('./src/commands')) {
-      for (const file of readdirSync(`./src/commands/${dir}`)) {
-        delete require.cache[require.resolve(`../commands/${dir}/${file}`)];
+
+    for (const path in require.cache) {
+      if (path.includes('src/commands')) {
+        delete require.cache[path];
       }
     }
   }
@@ -63,37 +63,47 @@ class Client extends Discord.Client {
   
   unloadEvents() {
     this.removeAllListeners();
-    
-    for (const file of readdirSync('./src/events')) {
-      delete require.cache[require.resolve(`../events/${file}`)];
+
+    for (const path in require.cache) {
+      if (path.includes('src/events')) {
+        delete require.cache[path];
+      }
     }
   }
 
   loadUtils() {
-    Object.assign(this.utils, require('../utils/misc'));
+    for (const file of readdirSync('./src/utils')) {
+      if (file == 'misc.js') continue;
+    
+      this.assets[file] = require(`../utils/${file}`);
+    }
 
-    this.utils.embeds = require('../utils/embeds');
+    Object.assign(this.utils, require('../utils/misc'));
   }
 
   unloadUtils() {
     this.utils = {};
 
-    for (const file of readdirSync('./src/utils')) {
-      delete require.cache[require.resolve(`../utils/${file}`)];
+    for (const path in require.cache) {
+      if (path.includes('src/utils')) {
+        delete require.cache[path];
+      }
     }
   }
 
   loadAssets() {
     for (const file of readdirSync('./src/assets')) {
-      this.assets[file] = require(`../utils/assets/${file}`);
+      this.assets[file] = require(`../assets/${file}`);
     }
   }
 
   unloadAssets() {
     this.assets = {};
 
-    for (const file of readdirSync('./src/assets')) {
-      delete require.cache[require.resolve(`../assets/${file}`)];
+    for (const path in require.cache) {
+      if (path.includes('src/assets')) {
+        delete require.cache[path];
+      }
     }
   }
 
