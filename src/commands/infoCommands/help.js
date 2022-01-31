@@ -23,7 +23,9 @@ module.exports = new Command({
       const catsReversed = Array.from(client.categories.values()).reverse();
       
       for (const cat of catsReversed) {
-        if (cat.hidden) continue;
+        const isDev = client.devs.includes(message.author.id);
+    
+        if (cat.hidden && !isDev) continue;
         
         embed.fields = embed.fields.concat({
           name: `${client.emojis.cache.get(cat.emojiID)} ${cat.name}`,

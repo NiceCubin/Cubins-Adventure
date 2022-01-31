@@ -83,6 +83,20 @@ class Client extends Discord.Client {
     }
   }
 
+  loadAssets() {
+    for (const file of readdirSync('./src/assets')) {
+      this.assets[file] = require(`../utils/assets/${file}`);
+    }
+  }
+
+  unloadAssets() {
+    this.assets = {};
+
+    for (const file of readdirSync('./src/assets')) {
+      delete require.cache[require.resolve(`../assets/${file}`)];
+    }
+  }
+
   start(token) {
     this.loadCommands();
     this.loadEvents();
