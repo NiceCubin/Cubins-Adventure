@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const fs = require('fs');
+const { readdirSync } = require('fs');
 
 class Client extends Discord.Client {
   constructor(options) {
@@ -17,9 +17,9 @@ class Client extends Discord.Client {
   loadCommands() {
     let commands = [];
     
-    const categories = fs.readdirSync('./src/commands').map(cat => {
+    const categories = readdirSync('./src/commands').map(cat => {
       const category = require(`../commands/${cat}`);
-      category.commands = fs.readdirSync(`./src/commands/${cat}`)
+      category.commands = readdirSync(`./src/commands/${cat}`)
         .filter(file => file !== "index.js")
         .map(file => {
           const command = require(`../commands/${cat}/${file}`);
@@ -40,8 +40,8 @@ class Client extends Discord.Client {
   unloadCommands() {
     this.commands.clear()
     
-    fs.readdirSync('./src/commands').forEach(cat => {
-      fs.readdirSync(`./src/commands/${cat}`)
+    readdirSync('./src/commands').forEach(cat => {
+      readdirSync(`./src/commands/${cat}`)
         .filter(file => file !== "index.js")
         .forEach(cmd => {
           delete require.cache[require.resolve(`../commands/${cat}/${cmd}`)];
@@ -50,7 +50,7 @@ class Client extends Discord.Client {
   }
 
   loadEvents() {
-    fs.readdirSync('./src/events').forEach(file => {
+    readdirSync('./src/events').forEach(file => {
       const event = require(`../events/${file}`);
       
       if (event.once) {
@@ -64,7 +64,7 @@ class Client extends Discord.Client {
   unloadEvents() {
     this.removeAllListeners();
     
-    fs.readdirSync('./src/events').forEach(file => {
+    readdirSync('./src/events').forEach(file => {
       delete require.cache[require.resolve(`../events/${file}`)];
     });
   }
@@ -78,7 +78,7 @@ class Client extends Discord.Client {
   unloadUtils() {
     this.utils = {};
 
-    fs.readdirSync('./src/utils').forEach(file => {
+    readdirSync('./src/utils').forEach(file => {
       delete require.cache[require.resolve(`../utils/${file}`)];
     });
   }
