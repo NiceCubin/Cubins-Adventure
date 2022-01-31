@@ -20,16 +20,16 @@ module.exports = new Command({
         color: 0xff00ff
       }
         
-      categoriesReversed = Array.from(client.categories.values()).reverse();
+      const catsReversed = Array.from(client.categories.values()).reverse();
       
-      categoriesReversed.forEach(cat => {
-        if (cat.hidden) return;
+      for (const cat of catsReversed) {
+        if (cat.hidden) continue;
         
         embed.fields = embed.fields.concat({
           name: `${client.emojis.cache.get(cat.emojiID)} ${cat.name}`,
           value: cat.description
         });
-      });
+      }
       
       return await message.reply({ embeds: [embed] });
     }

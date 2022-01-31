@@ -40,17 +40,17 @@ class Client extends Discord.Client {
   unloadCommands() {
     this.commands.clear()
     
-    readdirSync('./src/commands').forEach(cat => {
-      readdirSync(`./src/commands/${cat}`)
-        .filter(file => file !== "index.js")
-        .forEach(cmd => {
-          delete require.cache[require.resolve(`../commands/${cat}/${cmd}`)];
-        });
-    });
+    for (const dir of readdirSync('./src/commands')) {
+      for (const file of readdirSync(`./src/commands/${dir}`)) {
+        if (file == 'index.js') continue;
+      
+        delete require.cache[require.resolve(`../commands/${dir}/${file}`)];
+      }
+    }
   }
 
   loadEvents() {
-    readdirSync('./src/events').forEach(file => {
+    for (const file of readdirSync('./src/events')) {
       const event = require(`../events/${file}`);
       
       if (event.once) {
@@ -58,15 +58,15 @@ class Client extends Discord.Client {
       } else {
         this.on(event.event, event.run.bind(null, this));
       }
-    });
+    }
   }
   
   unloadEvents() {
     this.removeAllListeners();
     
-    readdirSync('./src/events').forEach(file => {
+    for (const file of readdirSync('./src/events')) {
       delete require.cache[require.resolve(`../events/${file}`)];
-    });
+    }
   }
 
   loadUtils() {
@@ -78,9 +78,9 @@ class Client extends Discord.Client {
   unloadUtils() {
     this.utils = {};
 
-    readdirSync('./src/utils').forEach(file => {
+    for (const file of readdirSync('./src/utils')) {
       delete require.cache[require.resolve(`../utils/${file}`)];
-    });
+    }
   }
 
   start(token) {

@@ -20,12 +20,15 @@ module.exports = new Event({
       command == null ||
       invalidDev
     ) return;
-    Object.keys(client.cooldowns).forEach(cmd => {
+
+    const cooldownCmds = Object.keys(client.cooldowns);
+    
+    for (const cmd of cooldownCmds) {
       if (client.commands.has(cmd)) {
         delete client.cooldowns[cmd];
         client.utils.updateJsonFile('./src/database/cooldowns.json', client.cooldowns);
       }
-    });
+    }
 
     const inCooldown = client.cooldowns.hasOwnProperty(command.name);
 
