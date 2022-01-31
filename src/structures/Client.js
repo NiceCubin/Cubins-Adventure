@@ -44,8 +44,6 @@ class Client extends Discord.Client {
     
     for (const dir of readdirSync('./src/commands')) {
       for (const file of readdirSync(`./src/commands/${dir}`)) {
-        if (file == 'index.js') continue;
-      
         delete require.cache[require.resolve(`../commands/${dir}/${file}`)];
       }
     }
@@ -104,7 +102,7 @@ class Client extends Discord.Client {
     this.loadEvents();
     this.loadUtils();
     this.loadAssets();
-    
+
     this.login(token);
   }
 }
