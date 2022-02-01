@@ -1,3 +1,5 @@
+const Discord = require('discord.js');
+
 const Event = require('../structures/Event');
 
 module.exports = new Event({
@@ -68,6 +70,6 @@ module.exports = new Event({
       return message.reply({ embeds: [client.utils.embeds.invalid(`You do not have the permissions required to use \`${command.name}\`.`)] });
     }
 
-    command.run(message, args, command, client);
+    command.run(message, args, command, client, Discord);
   }
 }, once = false);

@@ -9,7 +9,7 @@ module.exports = new Command({
   usage: ['[command | category]'],
   permissions: [],
   devOnly: false,
-  async run(message, args, command, client) {
+  async run(message, args, command, client, Discord) {
     const helpName = args[0];
     
     if (helpName === undefined) {

@@ -7,7 +7,7 @@ module.exports = new Command({
   usage: [],
   permissions: [],
   devOnly: true,
-  async run(message, args, command, client) {
+  async run(message, args, command, client, Discord) {
     client.unloadAssets();
     client.loadAssets();
 

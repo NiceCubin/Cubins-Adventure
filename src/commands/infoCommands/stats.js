@@ -7,7 +7,7 @@ module.exports = new Command({
   usage: [],
   permissions: [],
   devOnly: false,
-  async run(message, args, command, client) {
+  async run(message, args, command, client, Discord) {
     return await message.reply({
       embeds: [
         {
