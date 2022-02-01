@@ -17,7 +17,7 @@ module.exports = new Command({
             { name: 'Version', value: client.package.version },
             { name: 'Servers', value: JSON.stringify(client.guilds.cache.size) },
             { name: 'Ping', value: `${client.ws.ping}ms` },
-            { name: 'Uptime', value: client.utils.parseTime(client.uptime) }
+            { name: 'Uptime', value: client.utils.parseTime(process.uptime() * 1000) }
           ],
           color: 0xff00ff
         }
