@@ -1,6 +1,6 @@
 const keepAlive = require('../server');
-const config = require('../config.json');
 const botPackage = require('../package.json');
+const config = require('../config.json');
 
 const Client = require('./structures/Client');
 
