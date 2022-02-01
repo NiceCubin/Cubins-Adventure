@@ -11,10 +11,10 @@ module.exports = new Command({
     await message.reply({
       embeds: [
         {
-          title: 'Cubin\'s Adventure Info',
+          title: `${client.user.username} Info`,
           thumbnail: { url: client.user.avatarURL() },
           fields: [
-            { name: 'Version', value: client.version },
+            { name: 'Version', value: client.package.version },
             { name: 'Servers', value: JSON.stringify(client.guilds.cache.size) },
             { name: 'Ping', value: `${client.ws.ping}ms` },
             { name: 'Uptime', value: client.utils.parseTime(client.uptime) }

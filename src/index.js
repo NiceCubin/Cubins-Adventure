@@ -1,9 +1,11 @@
 const keepAlive = require('../server');
 const config = require('../config.json');
+const package = require('../package.json');
+
 const Client = require('./structures/Client');
 
 const client = new Client({
-  version: config.version,
+  package: package,
   prefix: config.prefix,
   devs: config.devs,
   intents: config.intents,

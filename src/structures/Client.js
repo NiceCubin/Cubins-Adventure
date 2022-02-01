@@ -5,7 +5,7 @@ class Client extends Discord.Client {
   constructor(options) {
     super(options);
 
-    this.version = options.version;
+    this.package = options.package;
     this.prefix = options.prefix;
     this.devs = options.devs;
     this.categories = new Discord.Collection();

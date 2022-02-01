@@ -1,0 +1,33 @@
+{
+  "name": "Cubins-Adventure",
+  "version": "0.1.0",
+  "description": "A bot I made for Discord written in Node.js.",
+  "main": "src/index.js",
+  "dependencies": {
+    "dedent-js": "^1.0.1",
+    "discord.js": "^13.1.0",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "node": "^16.9.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NiceCubin/Cubins-Adventure.git"
+  },
+  "keywords": [
+    "discord",
+    "bot",
+    "cubin"
+  ],
+  "author": "Cubin#9065",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NiceCubin/Cubins-Adventure/issues"
+  },
+  "homepage": "https://github.com/NiceCubin/Cubins-Adventure#readme"
+}
