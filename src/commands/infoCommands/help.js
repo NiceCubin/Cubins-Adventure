@@ -20,9 +20,7 @@ module.exports = new Command({
         color: 0xff00ff
       }
         
-      const categories = Array.from(client.categories.values());
-        
-      categories.sort((a, b) => a.name.localeCompare(b.name));
+      const categories = Array.from(client.categories.values()).sort((a, b) => a.name.localeCompare(b.name));
       
       for (const cat of categories) {
         const isDev = client.devs.includes(message.author.id);
