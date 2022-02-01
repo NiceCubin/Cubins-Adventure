@@ -16,24 +16,26 @@ class Client extends Discord.Client {
   }
 
   loadCommands() {
+    let categories = [];
     let commands = [];
     
-    const categories = readdirSync('./src/commands').map(cat => {
-      const category = require(`../commands/${cat}`);
-      category.commands = readdirSync(`./src/commands/${cat}`)
-        .filter(file => file !== "index.js")
-        .map(file => {
-          const command = require(`../commands/${cat}/${file}`);
-          command.category = category;
+    for (const dir of readdirSync('./src/commands')) {
+      const category = require(`../commands/${dir}`);
 
-          return command;
-        })
-        .sort((a, b) => a.name.localeCompare(b.name));
+      category.commands = [];
 
-      commands = commands.concat(category.commands);
+      for (const file of readdirSync(`./src/commands/${dir}`)) {
+        if (file == 'index.js') continue;
+       
+        const command = require(`../commands/${dir}/${file}`);
 
-      return category;
-    });
+      command.category = category;
+      category.commands.push(command);
+     }
+
+      categories.push(category)
+      commands = commands.concat(category.commands)
+   }
 
     categories.forEach(cat => this.categories.set(cat.name, cat));
     commands.forEach(cmd => this.commands.set(cmd.name, cmd));
