@@ -51,7 +51,7 @@ module.exports = new Command({
         embeds: [
           {
             title: `${client.emojis.cache.get(cat.emojiID)} ${cat.name} Commands`,
-            description: `${cat.commands.length ? `${`\`${cat.commands.map(cmd => cmd.name).join(', ')}`}\`` : 'This Category has no commands.'}`,
+            description: `${cat.commands.length ? `${`\`${cat.commands.map(cmd => cmd.name).sort((a, b) => a.localeCompare(b)).join(', ')}`}\`` : 'This Category has no commands.'}`,
             footer: { text: `use '${client.prefix}${command.name} [command]' for command info` },
             color: 0xff00ff
           }
