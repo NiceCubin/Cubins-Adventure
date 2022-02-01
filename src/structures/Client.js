@@ -77,7 +77,7 @@ class Client extends Discord.Client {
     for (const file of readdirSync('./src/utils')) {
       if (file == 'misc.js') continue;
     
-      this.assets[file] = require(`../utils/${file}`);
+      this.utils[file.replace(/\..+/, '')] = require(`../utils/${file}`);
     }
 
     Object.assign(this.utils, require('../utils/misc'));
@@ -95,7 +95,7 @@ class Client extends Discord.Client {
 
   loadAssets() {
     for (const file of readdirSync('./src/assets')) {
-      this.assets[file] = require(`../assets/${file}`);
+      this.assets[file.replace(/\..+/, '')] = require(`../assets/${file}`);
     }
   }
 
