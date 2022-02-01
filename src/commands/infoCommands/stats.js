@@ -8,7 +8,7 @@ module.exports = new Command({
   permissions: [],
   devOnly: false,
   async run(message, args, command, client) {
-    await message.reply({
+    return await message.reply({
       embeds: [
         {
           title: `${client.user.username} Info`,
