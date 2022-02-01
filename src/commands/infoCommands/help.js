@@ -38,7 +38,7 @@ module.exports = new Command({
       return await message.reply({ embeds: [embed] });
     }
     
-    for (const cat of client.categories) {
+    for (const cat of client.categories.values()) {
       const isDev = client.devs.includes(message.author.id);
       const isCategory = cat.name.toLowerCase() === helpName.toLowerCase();
       
@@ -59,7 +59,7 @@ module.exports = new Command({
       });
     }
     
-    for (const cmd of client.commands) {
+    for (const cmd of client.commands.values()) {
       const isDev = client.devs.includes(message.author.id);
       const isCommand = cmd.triggers.map(trig => trig.toLowerCase()).includes(helpName.toLowerCase());
       
