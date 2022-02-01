@@ -14,7 +14,7 @@ module.exports = new Command({
     
     if (helpName === undefined) {
       const embed = {
-        title: 'Cubin\'s Adventure Command Help',
+        title: `${client.user.username} Command Help`,
         description: `\`${client.prefix}${command.name} [category]\``,
         fields: [],
         color: 0xff00ff
