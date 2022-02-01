@@ -31,10 +31,10 @@ module.exports = {
 
     let times = [];
         
-        if (weeks) times.push(`${weeks}${short ? 'w' : ` week${weeks == 1 ? '' : 's'}`}`);
-        if (days) times.push(`${days}${short ? 'd' : ` day${days == 1 ? '' : 's'}`}`);
-        if (hours) times.push(`${hours}${short ? 'h' : ` hour${hours == 1 ? '' : 's'}`}`);
-        if (minutes) times.push(`${minutes}${short ? 'm' : ` minute${minutes == 1 ? '' : 's'}`}`);
+    if (weeks) times.push(`${weeks}${short ? 'w' : ` week${weeks == 1 ? '' : 's'}`}`);
+    if (days) times.push(`${days}${short ? 'd' : ` day${days == 1 ? '' : 's'}`}`);
+    if (hours) times.push(`${hours}${short ? 'h' : ` hour${hours == 1 ? '' : 's'}`}`);
+    if (minutes) times.push(`${minutes}${short ? 'm' : ` minute${minutes == 1 ? '' : 's'}`}`);
     if (seconds) times.push(`${seconds}${short ? 's' : ` second${seconds == 1 ? '' : 's'}`}`);
 
     return times.join(', ').replace(/(,\s)(?!.*,\s)/, times.length >= 3 ? ', and ' : ' and ');
