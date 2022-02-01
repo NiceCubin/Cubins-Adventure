@@ -61,7 +61,7 @@ module.exports = new Command({
     
     for (const cmd of client.commands.values()) {
       const isDev = client.devs.includes(message.author.id);
-      const isCommand = cmd.triggers.map(cmd => cmd.toLowerCase()).includes(helpName.toLowerCase());
+      const isCommand = cmd.triggers.map(trig => trig.toLowerCase()).includes(helpName.toLowerCase());
       
       if (
         (cmd.devOnly && !isDev) ||
