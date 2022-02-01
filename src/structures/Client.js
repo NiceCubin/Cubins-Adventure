@@ -8,11 +8,11 @@ class Client extends Discord.Client {
     this.package = options.package;
     this.prefix = options.prefix;
     this.devs = options.devs;
+    this.cooldowns = require('../database/cooldowns.json');
     this.categories = new Discord.Collection();
     this.commands = new Discord.Collection();
     this.utils = {};
     this.assets = {};
-    this.cooldowns = require('../database/cooldowns.json');
   }
 
   loadCommands() {
