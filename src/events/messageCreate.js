@@ -14,10 +14,9 @@ module.exports = new Event({
     const args = message.content.substring(client.prefix.length).split(/\s+/);
     
     const commandName = args.shift();
-    const command = client.commands.find(cmd => cmd.triggers.map(trig => trig.toLowerCase()).includes(commandName.toLowerCase()));
+    const command = client.getCommand(commandName);
 
-    const isDev = client.devs.includes(message.author.id);
-    const invalidDev = (command?.devOnly && !isDev);
+    const invalidDev = (command?.devOnly && !client.isDev(message.author.id));
     
     if (
       command == null ||

@@ -109,6 +109,18 @@ class Client extends Discord.Client {
     }
   }
 
+  getCommand(cmdName) {
+    return this.commands.find(cmd => cmd.triggers.map(trig => trig.toLowerCase()).includes(cmdName.toLowerCase()));
+  }
+
+  getCategory(catName) {
+    return this.categories.find(cat => cat.name.toLowerCase() === catName.toLowerCase());
+  }
+
+  isDev(userID) {
+    return this.devs.includes(userID);
+  }
+
   start(token) {
     this.loadCommands();
     this.loadEvents();

@@ -23,9 +23,7 @@ module.exports = new Command({
       const categories = Array.from(client.categories.values()).sort((a, b) => a.name.localeCompare(b.name));
       
       for (const cat of categories) {
-        const isDev = client.devs.includes(message.author.id);
-    
-        if (cat.hidden && !isDev) continue;
+        if (cat.hidden && !client.isDev(message.author.id)) continue;
         
         embed.fields = embed.fields.concat({
           name: `${client.emojis.cache.get(cat.emojiID)} ${cat.name}`,
@@ -36,49 +34,40 @@ module.exports = new Command({
       return await message.reply({ embeds: [embed] });
     }
     
-    for (const cat of client.categories.values()) {
-      const isDev = client.devs.includes(message.author.id);
-      const isCategory = cat.name.toLowerCase() === helpName.toLowerCase();
-      
-      if (
-        (cat.hidden && !isDev) ||
-        !isCategory
-      ) continue;
-      
+    const helpCategory = client.getCategory(helpName);
+    const invalidCategory = helpCategory?.hidden && client.isDev(message.author.id);
+
+    if (helpCategory != null && !invalidCategory) {
       return await message.reply({
         embeds: [
           {
-            title: `${client.emojis.cache.get(cat.emojiID)} ${cat.name} Commands`,
-            description: `${cat.commands.length ? `${`\`${cat.commands.map(cmd => cmd.name).sort((a, b) => a.localeCompare(b)).join(', ')}`}\`` : 'This Category has no commands.'}`,
+            title: `${client.emojis.cache.get(helpCategory.emojiID)} ${helpCategory.name} Commands`,
+            description: `${helpCategory.commands.length ? `${`\`${helpCategory.commands.map(cmd => cmd.name).sort((a, b) => a.localeCompare(b)).join(', ')}`}\`` : 'This Category has no commands.'}`,
             footer: { text: `use '${client.prefix}${command.name} [command]' for command info` },
             color: 0xff00ff
           }
         ]
       });
     }
+
+    const helpCommand = client.getCommand(helpName);
+    const invalidCommand = helpCommand?.devOnly && client.isDev(message.author.id);
+
     
-    for (const cmd of client.commands.values()) {
-      const isDev = client.devs.includes(message.author.id);
-      const isCommand = cmd.triggers.map(trig => trig.toLowerCase()).includes(helpName.toLowerCase());
-      
-      if (
-        (cmd.devOnly && !isDev) ||
-        !isCommand
-      ) continue;
-      
+    if (helpCommand != null && !invalidCommand) {
       return await message.reply({
         embeds: [
           {
-            title: `Command: \`${client.prefix}${cmd.name}\``,
+            title: `Command: \`${client.prefix}${helpCommand.name}\``,
             description: dedent
-              `**Description:** ${cmd.description}
-              **Aliases:** \`${cmd.triggers.join(', ')}\`
-              **Cooldown:** ${cmd.cooldown === 0 ? 'none' : cmd.cooldown}${cmd.cooldown === 0 ? '' : ` Second${cmd.cooldown === 1 ? '' : 's'}`}
-              ${cmd.permissions.length === 0 ? '' : `**Permissions Required:** \`${cmd.permissions.map(perm => client.utils.getCamelCase(perm))}\``}`,
-            author: { name: cmd.category.name, icon_url: client.utils.getEmojiIcon(client.emojis.cache.get(cmd.category.emojiID))},
+              `**Description:** ${helpCommand.description}
+              **Aliases:** \`${helpCommand.triggers.join(', ')}\`
+              **Cooldown:** ${helpCommand.cooldown === 0 ? 'none' : helpCommand.cooldown}${helpCommand.cooldown === 0 ? '' : ` Second${helpCommand.cooldown === 1 ? '' : 's'}`}
+              ${helpCommand.permissions.length === 0 ? '' : `**Permissions Required:** \`${helpCommand.permissions.map(perm => client.utils.getCamelCase(perm))}\``}`,
+            author: { name: helpCommand.category.name, icon_url: client.utils.getEmojiIcon(client.emojis.cache.get(helpCommand.category.emojiID))},
             footer: { text: 'usage syntax: <required> [optional]' },
             fields: [
-              { name: 'Usage:', value: `\`${client.prefix}${[cmd.name].concat(cmd.usage).join(' ')}\`` }
+              { name: 'Usage:', value: `\`${client.prefix}${[helpCommand.name].concat(helpCommand.usage).join(' ')}\`` }
             ],
             color: 0xff00ff
           }
