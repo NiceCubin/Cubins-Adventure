@@ -26,7 +26,7 @@ class Client extends Discord.Client {
       category.commands = [];
 
       for (const file of readdirSync(`./src/commands/${dir}`)) {
-        if (file == 'index.js') continue;
+        if (file === 'index.js') continue;
        
         const command = require(`../commands/${dir}/${file}`);
 
@@ -57,7 +57,7 @@ class Client extends Discord.Client {
       const event = require(`../events/${file}`);
       
       if (event.once) {
-        this.once(event.event, event.run.bind(null, this));
+       this.once(event.event, event.run.bind(null, this));
       } else {
         this.on(event.event, event.run.bind(null, this));
       }
@@ -76,7 +76,7 @@ class Client extends Discord.Client {
 
   loadUtils() {
     for (const file of readdirSync('./src/utils')) {
-      if (file == 'misc.js') continue;
+      if (file === 'misc.js') continue;
     
       this.utils[parse(file).name] = require(`../utils/${file}`);
     }
