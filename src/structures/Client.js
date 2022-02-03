@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const { readdirSync } = require('fs');
+const { parse } = require('path');
 
 class Client extends Discord.Client {
   constructor(options) {
@@ -77,7 +78,7 @@ class Client extends Discord.Client {
     for (const file of readdirSync('./src/utils')) {
       if (file == 'misc.js') continue;
     
-      this.utils[file.replace(/\..+/, '')] = require(`../utils/${file}`);
+      this.utils[parse(file).name] = require(`../utils/${file}`);
     }
 
     Object.assign(this.utils, require('../utils/misc'));
@@ -95,7 +96,7 @@ class Client extends Discord.Client {
 
   loadAssets() {
     for (const file of readdirSync('./src/assets')) {
-      this.assets[file.replace(/\..+/, '')] = require(`../assets/${file}`);
+      this.assets[parse(file).name] = require(`../assets/${file}`);
     }
   }
 
