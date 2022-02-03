@@ -16,11 +16,11 @@ module.exports = new Event({
     const commandName = args.shift();
     const command = client.getCommand(commandName);
 
-    const invalidDev = (command?.devOnly && !client.isDev(message.author.id));
+    const hasDevAccess = (command?.devOnly && !client.isDev(message.author.id));
     
     if (
       command == null ||
-      invalidDev
+      hasDevAccess
     ) return;
 
     const cooldownCmds = Object.keys(client.cooldowns);
@@ -32,9 +32,9 @@ module.exports = new Event({
       }
     }
 
-    const inCooldown = client.cooldowns.hasOwnProperty(command.name);
+    const isInCooldown = client.cooldowns.hasOwnProperty(command.name);
 
-    if (!inCooldown) {
+    if (!isInCooldown) {
       client.cooldowns[command.name] = {};
       client.utils.updateJsonFile('./src/database/cooldowns.json', client.cooldowns);
     }
