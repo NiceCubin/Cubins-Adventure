@@ -35,7 +35,7 @@ module.exports = new Command({
     }
     
     const helpCategory = client.getCategory(helpName);
-    const isNotHidden = helpCategory?.hidden && client.isDev(message.author.id);
+    const isNotHidden = (helpCategory?.hidden && client.isDev(message.author.id));
 
     if (helpCategory != null && isNotHidden) {
       return await message.reply({
@@ -51,7 +51,7 @@ module.exports = new Command({
     }
 
     const helpCommand = client.getCommand(helpName);
-    const hasDevAccess = helpCommand?.devOnly && client.isDev(message.author.id);
+    const hasDevAccess = (helpCommand?.devOnly && client.isDev(message.author.id));
 
     
     if (helpCommand != null && hasDevAccess) {
