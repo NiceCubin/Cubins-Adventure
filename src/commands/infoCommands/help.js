@@ -19,10 +19,10 @@ module.exports = new Command({
         fields: [],
         color: 0xff00ff
       }
-        
-      const categories = Array.from(client.categories.values()).sort((a, b) => a.name.localeCompare(b.name));
       
-      for (const cat of categories) {
+      const sortedCategories = client.categories.sort((a, b) => a.name.localeCompare(b.name));
+      
+      for (const cat of sortedCategories.values()) {
         if (cat.hidden && !client.isDev(message.author.id)) continue;
         
         embed.fields = embed.fields.concat({
