@@ -57,7 +57,7 @@ class Client extends Discord.Client {
       const event = require(`../events/${file}`);
       
       if (event.once) {
-       this.once(event.event, event.run.bind(null, this));
+        this.once(event.event, event.run.bind(null, this));
       } else {
         this.on(event.event, event.run.bind(null, this));
       }
