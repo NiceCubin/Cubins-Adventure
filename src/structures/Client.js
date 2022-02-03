@@ -43,7 +43,7 @@ class Client extends Discord.Client {
   }
 
   unloadCommands() {
-    this.commands.clear()
+    this.commands.clear();
 
     for (const path in require.cache) {
       if (path.includes('src/commands')) {
