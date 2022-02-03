@@ -12,7 +12,7 @@ module.exports = new Command({
   async run(message, args, command, client, Discord) {
     const helpName = args[0];
     
-    if (helpName == null) {
+    if (helpName === undefined) {
       const embed = {
         title: `${client.user.username} Command Help`,
         description: `\`${client.prefix}${command.name} [category]\``,
