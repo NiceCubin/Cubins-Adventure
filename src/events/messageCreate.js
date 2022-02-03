@@ -25,9 +25,9 @@ module.exports = new Event({
 
     const cooldownCmds = Object.keys(client.cooldowns);
     
-    for (const cmd of cooldownCmds) {
-      if (client.commands.has(cmd)) {
-        delete client.cooldowns[cmd];
+    for (const cmdName of cooldownCmds) {
+      if (client.commands.has(cmdName)) {
+        delete client.cooldowns[cmdName];
         client.utils.updateJsonFile('./src/database/cooldowns.json', client.cooldowns);
       }
     }
