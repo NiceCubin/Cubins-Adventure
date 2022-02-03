@@ -35,9 +35,9 @@ module.exports = new Command({
     }
     
     const helpCategory = client.getCategory(helpName);
-    const notHidden = helpCategory?.hidden && client.isDev(message.author.id);
+    const isNotHidden = helpCategory?.hidden && client.isDev(message.author.id);
 
-    if (helpCategory != null && notHidden) {
+    if (helpCategory != null && isNotHidden) {
       return await message.reply({
         embeds: [
           {
