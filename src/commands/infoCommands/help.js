@@ -35,9 +35,9 @@ module.exports = new Command({
     }
     
     const helpCategory = client.getCategory(helpName);
-    const invalidCategory = helpCategory?.hidden && client.isDev(message.author.id);
+    const notHidden = helpCategory?.hidden && client.isDev(message.author.id);
 
-    if (helpCategory != null && !invalidCategory) {
+    if (helpCategory != null && notHidden) {
       return await message.reply({
         embeds: [
           {
@@ -51,10 +51,10 @@ module.exports = new Command({
     }
 
     const helpCommand = client.getCommand(helpName);
-    const invalidCommand = helpCommand?.devOnly && client.isDev(message.author.id);
+    const hasDevAccess = helpCommand?.devOnly && client.isDev(message.author.id);
 
     
-    if (helpCommand != null && !invalidCommand) {
+    if (helpCommand != null && hasDevAccess) {
       return await message.reply({
         embeds: [
           {
