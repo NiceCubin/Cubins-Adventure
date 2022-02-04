@@ -19,7 +19,7 @@ module.exports = new Event({
     const hasDevAccess = (command?.devOnly && !client.isDev(message.author.id));
     
     if (
-      command == null ||
+      !command ||
       hasDevAccess
     ) return;
     
