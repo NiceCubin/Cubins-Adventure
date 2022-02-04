@@ -36,7 +36,7 @@ class Client extends Discord.Client {
       
       categories.push(category);
       commands = commands.concat(category.commands);
-   }
+    }
     
     categories.forEach(cat => this.categories.set(cat.name, cat));
     commands.forEach(cmd => this.commands.set(cmd.name, cmd));

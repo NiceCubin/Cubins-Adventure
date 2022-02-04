@@ -15,7 +15,7 @@ module.exports = new Event({
     
     const commandName = args.shift();
     const command = client.getCommand(commandName);
-  
+    
     const hasDevAccess = (command?.devOnly && !client.isDev(message.author.id));
     
     if (
