@@ -24,11 +24,10 @@ module.exports = new Event({
     ) return;
 
     const cooldownCmds = Object.keys(client.cooldowns);
-    
+
     for (const cmdName of cooldownCmds) {
-      if (client.commands.has(cmdName)) {
+      if (!client.commands.has(cmdName)) {
         delete client.cooldowns[cmdName];
-        client.utils.updateJsonFile('./src/database/cooldowns.json', client.cooldowns);
       }
     }
 
@@ -36,7 +35,6 @@ module.exports = new Event({
 
     if (!isInCooldown) {
       client.cooldowns[command.name] = {};
-      client.utils.updateJsonFile('./src/database/cooldowns.json', client.cooldowns);
     }
 
     const timeStamps = client.cooldowns[command.name];
@@ -56,12 +54,14 @@ module.exports = new Event({
     }
     
     client.cooldowns[command.name][message.author.id] = currentTime;
-    client.utils.updateJsonFile('./src/database/cooldowns.json', client.cooldowns);
     
     setTimeout(() => {
       delete client.cooldowns[command.name][message.author.id];
+
       client.utils.updateJsonFile('./src/database/cooldowns.json', client.cooldowns);
     }, cooldownTime);
+    
+    client.utils.updateJsonFile('./src/database/cooldowns.json', client.cooldowns);
     
     const hasPermissions = message.member.permissions.has(command.permissions);
 
