@@ -10,7 +10,7 @@ module.exports = new Command({
   async run(message, args, command, client, Discord) {
     client.unloadCommands();
     client.loadCommands();
-
+    
     return await message.reply('Successfully reloaded all commands and their categories.');
   }
 });

@@ -7,19 +7,19 @@ module.exports = new Command({
   usage: [],
   permissions: [],
   devOnly: true,
-  async run(message, args, command, client, Discord) { 
+  async run(message, args, command, client, Discord) {
     client.unloadCommands();
     client.loadCommands();
-
+    
     client.unloadEvents();
     client.loadEvents();
-
+    
     client.unloadUtils();
     client.loadUtils();
-
+    
     client.unloadAssets();
     client.loadAssets();
-
+    
     return await message.reply('Successfully reloaded everything.');
   }
 });

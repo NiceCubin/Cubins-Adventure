@@ -36,7 +36,7 @@ module.exports = new Command({
     
     const helpCategory = client.getCategory(helpName);
     const isHidden = (helpCategory?.hidden && !client.isDev(message.author.id));
-
+    
     if (helpCategory != null && !isHidden) {
       return await message.reply({
         embeds: [
@@ -49,10 +49,9 @@ module.exports = new Command({
         ]
       });
     }
-
+    
     const helpCommand = client.getCommand(helpName);
     const hasDevAccess = (helpCommand?.devOnly && client.isDev(message.author.id));
-
     
     if (helpCommand != null && hasDevAccess) {
       return await message.reply({
@@ -74,7 +73,7 @@ module.exports = new Command({
         ]
       });
     }
-
+    
     return await message.reply({ embeds: [client.utils.embeds.invalid(`No Command or Category named \`${helpName}\` found.`)] });
   }
 });

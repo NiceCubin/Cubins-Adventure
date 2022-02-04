@@ -10,7 +10,7 @@ module.exports = new Command({
   async run(message, args, command, client, Discord) {
     client.unloadEvents();
     client.loadEvents();
-
+    
     return await message.reply('Successfully reloaded all events.');
     }
 });

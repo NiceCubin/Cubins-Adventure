@@ -10,7 +10,7 @@ module.exports = new Command({
   async run(message, args, command, client, Discord) {
     client.unloadAssets();
     client.loadAssets();
-
+    
     return await message.reply('Successfully reloaded all assets.');
     }
 });
