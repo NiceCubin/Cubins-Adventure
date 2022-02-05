@@ -64,7 +64,7 @@ module.exports = new Command({
               **Cooldown:** ${helpCommand.cooldown === 0 ? 'none' : helpCommand.cooldown}${helpCommand.cooldown === 0 ? '' : ` Second${helpCommand.cooldown === 1 ? '' : 's'}`}
               ${helpCommand.permissions.length === 0 ? '' : `**Permissions Required:** \`${helpCommand.permissions.map(perm => client.utils.getCamelCase(perm))}\``}`,
             author: { name: helpCommand.category.name, icon_url: client.utils.getEmojiIcon(client.emojis.cache.get(helpCommand.category.emojiID))},
-            footer: { text: 'usage syntax: <required> [optional]' },
+            footer: { text: 'usage syntax: <required>, [optional], *multiple' },
             fields: [
               { name: 'Usage:', value: `\`${client.prefix}${[helpCommand.name].concat(helpCommand.usage).join(' ')}\`` }
             ],
