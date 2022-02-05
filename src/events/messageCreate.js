@@ -27,7 +27,7 @@ module.exports = new Event({
     
     for (const cmdName of cooldownCmds) {
       if (!client.commands.has(cmdName)) {
-        delete client.cooldowns[cmdName];
+        delete cmdName;
       }
     }
     
