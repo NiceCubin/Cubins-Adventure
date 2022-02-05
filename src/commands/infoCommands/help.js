@@ -51,9 +51,9 @@ module.exports = new Command({
     }
     
     const helpCommand = client.getCommand(helpName);
-    const hasDevAccess = (helpCommand?.devOnly && client.isDev(message.author.id));
+    const hasNoDevAccess = (helpCommand?.devOnly && !client.isDev(message.author.id));
     
-    if (helpCommand && hasDevAccess) {
+    if (helpCommand && !hasNoDevAccess) {
       return await message.reply({
         embeds: [
           {
