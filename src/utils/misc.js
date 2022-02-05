@@ -42,6 +42,6 @@ module.exports = {
   },
   
   updateJsonFile(file, data) {
-    require('fs').writeFileSync(file, JSON.stringify(data, null, 4));
+    require('fs').writeFileSync(file, JSON.stringify(data, null, 2));
   }
 }
