@@ -43,5 +43,9 @@ module.exports = {
   
   updateJsonFile(file, data) {
     require('fs').writeFileSync(file, JSON.stringify(data, null, 2));
+  },
+  
+  toCodeBlock(str) {
+    return `\`\`\`${str}\`\`\``;
   }
 }
