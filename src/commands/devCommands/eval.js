@@ -20,7 +20,6 @@ module.exports = new Command({
       output = client.utils.toCodeBlock(output);
       
       await message.channel.send(output);
-
       return await message.delete();
     }).catch(async err => {
       err = err.toString();
