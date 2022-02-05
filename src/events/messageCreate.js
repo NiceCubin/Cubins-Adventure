@@ -4,7 +4,7 @@ const Event = require('../structures/Event');
 
 module.exports = new Event({
   event: 'messageCreate',
-  run(client, message) {
+  async run(client, message) {
     if (
       !message.content.startsWith(client.prefix) ||
       message.author.bot ||
@@ -49,7 +49,7 @@ module.exports = new Event({
       if (currentTime < expirationTime) {
         const timeLeft = expirationTime - currentTime;
         
-        return message.reply({ embeds: [client.utils.embeds.invalid(`You are still on cooldown for \`${command.name}\` for ${client.utils.parseTime(timeLeft, short = true)}.`)] });
+        return await message.reply({ embeds: [client.utils.embeds.invalid(`You are still on cooldown for \`${command.name}\` for ${client.utils.parseTime(timeLeft, short = true)}.`)] });
       }
     }
     
@@ -66,7 +66,7 @@ module.exports = new Event({
     const hasPermissions = message.member.permissions.has(command.permissions);
     
     if (!hasPermissions) {
-      return message.reply({ embeds: [client.utils.embeds.invalid(`You do not have the permissions required to use \`${command.name}\`.`)] });
+      return await message.reply({ embeds: [client.utils.embeds.invalid(`You do not have the permissions required to use \`${command.name}\`.`)] });
     }
     
     command.run(message, args, command, client, Discord);
