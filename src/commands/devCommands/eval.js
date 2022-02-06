@@ -10,13 +10,18 @@ module.exports = new Command({
   permissions: [],
   devOnly: true,
   async run(message, args, command, client, Discord) {
-    const content = args.join(' ');
+    const code = args.join(' ');
     
-    const result = new Promise(resolve => resolve(eval(content)));
+    if (code === '') {
+      return await message.reply({ embeds: [client.utils.embeds.error('You must input code to evaluate.')] });
+    }
+    
+    const result = new Promise(resolve => resolve(eval(code)));
         
     return result.then(async output => {
       output = inspect(output, { depth: 0 });
       output = output.replace(client.token, '<insertTokenHere>');
+      output = output.replace(/^["'](.+(?=["']$))["']$/, '$1');
       output = client.utils.toCodeBlock(output);
       
       await message.channel.send(output);
@@ -24,9 +29,9 @@ module.exports = new Command({
     }).catch(async err => {
       err = err.toString();
       err = err.replace(client.token, '<insertTokenHere>');
-      err = client.utils.toCodeBlock(err);
+      err = `\`${err}\``;
       
-      return await message.reply(err);
+      return await message.reply({ embeds: [client.utils.embeds.error(err)] });
     });
   }
 });
