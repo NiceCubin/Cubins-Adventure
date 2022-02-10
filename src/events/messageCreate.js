@@ -3,6 +3,7 @@ const Discord = require('discord.js');
 const Event = require('../structures/Event');
 
 module.exports = new Event({
+  filename: __filename,
   event: 'messageCreate',
   async run(client, message) {
     if (
