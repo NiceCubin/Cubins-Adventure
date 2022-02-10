@@ -14,4 +14,4 @@ const client = new Client({
 });
 
 keepAlive();
-client.start(process.env.TOKEN);
+client.start(process.env.TOKEN);= 

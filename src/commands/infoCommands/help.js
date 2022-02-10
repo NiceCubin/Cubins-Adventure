@@ -3,6 +3,7 @@ const dedent = require('dedent-js');
 const Command = require('../../structures/Command');
 
 module.exports = new Command({
+  filename: __filename,
   triggers: ['help', '?'],
   description: 'shows help for commands.',
   cooldown: 5,
@@ -12,7 +13,7 @@ module.exports = new Command({
   async run(message, args, command, client, Discord) {
     const helpName = args[0];
     
-    if (helpName === undefined) {
+    if (!helpName) {
       const embed = {
         title: `${client.user.username} Command Help`,
         description: `\`${client.prefix}${command.name} [category]\``,

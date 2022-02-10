@@ -1,6 +1,7 @@
 const Command = require('../../structures/Command');
 
 module.exports = new Command({
+  filename: __filename,
   triggers: ['reloadall'],
   description: 'reloads all commands, events, utils, and assets.',
   cooldown: 0,

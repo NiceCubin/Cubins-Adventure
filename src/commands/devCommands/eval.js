@@ -3,6 +3,7 @@ const { inspect } = require('util');
 const Command = require('../../structures/Command');
 
 module.exports = new Command({
+  filename: __filename,
   triggers: ['eval', 'evaluate'],
   description: 'evaluates inputted code.',
   cooldown: 0,
@@ -12,7 +13,7 @@ module.exports = new Command({
   async run(message, args, command, client, Discord) {
     const code = args.join(' ');
     
-    if (code === '') {
+    if (!code) {
       return await message.reply({ embeds: [client.utils.embeds.error('You must input code to evaluate.')] });
     }
     

@@ -23,9 +23,9 @@ module.exports = new Event({
       hasDevAccess
     ) return;
     
-    const cooldownCmds = Object.keys(client.cooldowns);
+    const cooldownCmdNames = Object.keys(client.cooldowns);
     
-    for (const cmdName of cooldownCmds) {
+    for (const cmdName of cooldownCmdNames) {
       if (!client.commands.has(cmdName)) {
         delete cmdName;
       }

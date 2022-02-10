@@ -1,6 +1,7 @@
 const Command = require('../../structures/Command');
 
 module.exports = new Command({
+  filename: __filename,
   triggers: ['stats', 'botinfo'],
   description: 'shows basic statistics of the bot.',
   cooldown: 10,

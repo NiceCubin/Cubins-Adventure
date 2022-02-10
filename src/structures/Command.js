@@ -1,5 +1,6 @@
 class Command {
   constructor(options) {
+    this.filename = options.filename;
     this.triggers = options.triggers;
     this.description = options.description;
     this.cooldown = options.cooldown;

@@ -121,6 +121,15 @@ class Client extends Discord.Client {
   isDev(userID) {
     return this.devs.includes(userID);
   }
+
+  loadCommand(cmdPath) {
+    this.commands.set()
+  }
+
+  unloadCommand(cmdPath, cmdName) {
+    
+  }
+  
   
   start(token) {
     this.loadCommands();

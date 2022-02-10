@@ -1,6 +1,7 @@
 const Command = require('../../structures/Command');
 
 module.exports = new Command({
+  filename: __filename,
   triggers: ['reloadassets'],
   description: 'reloads all assets.',
   cooldown: 0,

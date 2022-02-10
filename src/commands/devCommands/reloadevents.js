@@ -1,6 +1,7 @@
 const Command = require('../../structures/Command');
 
 module.exports = new Command({
+  filename: __filename,
   triggers: ['reloadevents'],
   description: 'reloads all events.',
   cooldown: 0,
