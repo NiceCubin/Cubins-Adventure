@@ -62,7 +62,6 @@ class Client extends Discord.Client {
   loadEvents() {
     for (const file of readdirSync('./src/events')) {
       const event = require(`../events/${file}`);
-
       const emitterMethod = event.once ? 'once' : 'on';
       
       this[emitterMethod](event.event, event.run.bind(null, this));
