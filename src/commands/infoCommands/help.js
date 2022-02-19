@@ -22,7 +22,6 @@ module.exports = new Command({
       }
       
       const sortedCategories = Array.from(client.categories.values()).sort((a, b) => a.name.localeCompare(b.name));
-      console.log(sortedCategories)
       
       for (const cat of sortedCategories) {
         if (cat.hidden && !client.isDev(message.author.id)) continue;
