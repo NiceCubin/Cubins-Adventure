@@ -1,3 +1,5 @@
+const { writeFileSync } = require('fs');
+
 module.exports = {
   getEmojiIcon(emoji) {
     if (!emoji) return;
@@ -42,7 +44,7 @@ module.exports = {
   },
   
   updateJsonFile(file, data) {
-    require('fs').writeFileSync(file, JSON.stringify(data, null, 2));
+    writeFileSync(file, JSON.stringify(data, null, 2));
   },
   
   toCodeBlock(str) {
