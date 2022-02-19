@@ -40,7 +40,7 @@ class Client extends Discord.Client {
     for (const dir of readdirSync('./src/commands')) {
       const category = require(`../commands/${dir}`);
       
-      category.commands = [];
+      const categoryCommands = [];
       
       for (const file of readdirSync(`./src/commands/${dir}`)) {
         if (file === 'index.js') continue;
@@ -48,11 +48,14 @@ class Client extends Discord.Client {
         const command = require(`../commands/${dir}/${file}`);
         
         command.category = category;
-        category.commands.push(command);
+        categoryCommands.push(command);
       }
+
+      category.commands = new Discord.Collection();
+      categoryCommands.forEach(cmd => category.commands.set(cmd.name, cmd));
       
       categories.push(category);
-      commands = commands.concat(category.commands);
+      commands = commands.concat(categoryCommands);
     }
     
     categories.forEach(cat => this.categories.set(cat.name, cat));

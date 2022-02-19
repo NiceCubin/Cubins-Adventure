@@ -43,7 +43,7 @@ module.exports = new Command({
         embeds: [
           {
             title: `${client.emojis.cache.get(helpCategory.emojiID)} ${helpCategory.name} Commands`,
-            description: `${helpCategory.commands.length ? `${`\`${Array.from(helpCategory.commands.values()).map(cmd => cmd.name).sort((a, b) => a.localeCompare(b)).join(', ')}`}\`` : 'This Category has no commands.'}`,
+            description: `${helpCategory.commands.size ? `${`\`${Array.from(helpCategory.commands.values()).map(cmd => cmd.name).sort((a, b) => a.localeCompare(b)).join(', ')}`}\`` : 'This Category has no commands.'}`,
             footer: { text: `use '${client.prefix}${command.name} [command]' for command info` },
             color: 0xff00ff
           }
