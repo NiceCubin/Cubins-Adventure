@@ -21,9 +21,10 @@ module.exports = new Command({
         color: 0xff00ff
       }
       
-      const sortedCategories = client.categories.sort((a, b) => a.name.localeCompare(b.name));
+      const sortedCategories = Array.from(client.categories.values()).sort((a, b) => a.name.localeCompare(b.name));
+      console.log(sortedCategories)
       
-      for (const cat of sortedCategories.values()) {
+      for (const cat of sortedCategories) {
         if (cat.hidden && !client.isDev(message.author.id)) continue;
         
         embed.fields = embed.fields.concat({
@@ -43,7 +44,7 @@ module.exports = new Command({
         embeds: [
           {
             title: `${client.emojis.cache.get(helpCategory.emojiID)} ${helpCategory.name} Commands`,
-            description: `${helpCategory.commands.length ? `${`\`${helpCategory.commands.map(cmd => cmd.name).sort((a, b) => a.localeCompare(b)).join(', ')}`}\`` : 'This Category has no commands.'}`,
+            description: `${helpCategory.commands.length ? `${`\`${Array.from(helpCategory.commands.values()).map(cmd => cmd.name).sort((a, b) => a.localeCompare(b)).join(', ')}`}\`` : 'This Category has no commands.'}`,
             footer: { text: `use '${client.prefix}${command.name} [command]' for command info` },
             color: 0xff00ff
           }
