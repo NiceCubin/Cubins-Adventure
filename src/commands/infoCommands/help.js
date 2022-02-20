@@ -62,8 +62,8 @@ module.exports = new Command({
             description: dedent
               `**Description:** ${helpCommand.description}
               **Aliases:** \`${helpCommand.triggers.join(', ')}\`
-              **Cooldown:** ${helpCommand.cooldown === 0 ? 'none' : helpCommand.cooldown}${helpCommand.cooldown === 0 ? '' : ` Second${helpCommand.cooldown === 1 ? '' : 's'}`}
-              ${helpCommand.permissions.length === 0 ? '' : `**Permissions Required:** \`${helpCommand.permissions.map(perm => client.utils.getCamelCase(perm))}\``}`,
+              **Cooldown:** ${helpCommand.cooldown ? helpCommand.cooldown : 'none'}${helpCommand.cooldown ? ` Second${helpCommand.cooldown === 1 ? '' : 's'}` : ''}
+              ${helpCommand.permissions.length ? `**Permissions Required:** \`${helpCommand.permissions.map(perm => client.utils.getCamelCase(perm))}\`` : ''}`,
             author: { name: helpCommand.category.name, icon_url: client.utils.getEmojiIcon(client.emojis.cache.get(helpCommand.category.emojiID))},
             footer: { text: 'usage syntax: <required>, [optional], *multiple' },
             fields: [
