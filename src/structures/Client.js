@@ -9,65 +9,35 @@ class Client extends Discord.Client {
     this.package = options.package;
     this.prefix = options.prefix;
     this.devs = options.devs;
-    this.cooldowns = require('../database/cooldowns.json');
     this.categories = new Discord.Collection();
     this.commands = new Discord.Collection();
-    this.disabledCommands = new Discord.Collection();
-    this.utils = {};
     this.assets = {};
   }
 
-  loadCommand(commandName) {
-    const disabledCommand = this.getDisabledCommand(commandName);
-
-    if (!disabledCommand) {
-      return false;
-    }
-
-    const newCommand = require(disabledCommand.filename);
-    newCommand.category = disabledCommand.category;
-
-    this.disabledCommands.delete(commandName);
-    this.commands.set(newCommand.name, newCommand);
-    
-    return true;
-  }
-  
   loadCommands() {
-    let categories = [];
-    let commands = [];
-    
     for (const dir of readdirSync('./src/commands')) {
       const category = require(`../commands/${dir}`);
-      
-      const categoryCommands = [];
       
       for (const file of readdirSync(`./src/commands/${dir}`)) {
         if (file === 'index.js') continue;
         
         const command = require(`../commands/${dir}/${file}`);
-        
         command.category = category;
-        categoryCommands.push(command);
+        
+        category.commands.set(command.name, command);
+        this.commands.set(command.name, command);
       }
-
-      category.commands = new Discord.Collection();
-      categoryCommands.forEach(cmd => category.commands.set(cmd.name, cmd));
       
-      categories.push(category);
-      commands = commands.concat(categoryCommands);
+      this.categories.set(category.name, category);
     }
-    
-    categories.forEach(cat => this.categories.set(cat.name, cat));
-    commands.forEach(cmd => this.commands.set(cmd.name, cmd));
   }
   
   loadEvents() {
     for (const file of readdirSync('./src/events')) {
       const event = require(`../events/${file}`);
-      const emitterMethod = event.once ? 'once' : 'on';
+      const onMethod = event.once ? 'once' : 'on';
       
-      this[emitterMethod](event.event, event.run.bind(null, this));
+      this[onMethod](event.event, event.run.bind(null, this));
     }
   }
   
@@ -75,10 +45,10 @@ class Client extends Discord.Client {
     for (const file of readdirSync('./src/utils')) {
       if (file === 'misc.js') continue;
       
-      this.utils[parse(file).name] = require(`../utils/${file}`);
+      this[parse(file).name] = require(`../utils/${file}`);
     }
     
-    Object.assign(this.utils, require('../utils/misc'));
+    Object.assign(this, require('../utils/misc'));
   }
   
   loadAssets() {
@@ -86,73 +56,13 @@ class Client extends Discord.Client {
       this.assets[parse(file).name] = require(`../assets/${file}`);
     }
   }
-
-  unloadCommand(commandName) {
-    const command = this.getCommand(commandName);
-    
-    if (!command) {
-      return false;
-    }
-
-    delete require.cache[require.resolve(command.filename)];
-
-    this.commands.delete(commandName);
-    this.disabledCommands.set(commandName, command);
-    
-    return true;
-  }
-  
-  unloadCommands() {
-    this.commands.forEach(cmd => this.disabledCommands.set(cmd.name, cmd));
-    this.commands.clear();
-    
-    for (const path in require.cache) {
-      if (path.includes('src/commands')) {
-        delete require.cache[path];
-      }
-    }
-  }
-  
-  unloadEvents() {
-    this.removeAllListeners();
-
-    for (const path in require.cache) {
-      if (path.includes('src/events')) {
-        delete require.cache[path];
-      }
-    }
-  }
-  
-  unloadUtils() {
-    this.utils = {};
-    
-    for (const path in require.cache) {
-      if (path.includes('src/utils')) {
-        delete require.cache[path];
-      }
-    }
-  }
-  
-  unloadAssets() {
-    this.assets = {};
-    
-    for (const path in require.cache) {
-      if (path.includes('src/assets')) {
-        delete require.cache[path];
-      }
-    }
-  }
   
   getCommand(commandName) {
     return this.commands.find(cmd => cmd.triggers.map(trig => trig.toLowerCase()).includes(commandName.toLowerCase()));
   }
-
-  getDisabledCommand(commandName) {
-    return this.disabledCommands.find(cmd => cmd.triggers.map(trig => trig.toLowerCase()).includes(commandName.toLowerCase()));
-  }
   
   getCategory(categoryName) {
-    return this.categories.find(cat => cat.name.toLowerCase() === categoryName.toLowerCase());
+    return this.categories.find(cat => cat.triggers.map(trig => trig.toLowerCase()).includes(categoryName.toLowerCase()));
   }
   
   isDev(userID) {

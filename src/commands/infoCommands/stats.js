@@ -8,19 +8,19 @@ module.exports = new Command({
   usage: [],
   permissions: [],
   devOnly: false,
-  async run(message, args, command, client, Discord) {
+  async run(message, args, thisCommand, client, Discord) {
     return await message.reply({
       embeds: [
         {
-          title: `${client.user.username} Info`,
           thumbnail: { url: client.user.avatarURL() },
+          title: `${client.user.username} Info`,
           fields: [
             { name: 'Version', value: client.package.version },
             { name: 'Servers', value: JSON.stringify(client.guilds.cache.size) },
             { name: 'Ping', value: `${client.ws.ping}ms` },
-            { name: 'Uptime', value: client.utils.parseTime(process.uptime() * 1000) }
+            { name: 'Uptime', value: client.parseTime(process.uptime()) }
           ],
-          color: 0xff00ff
+          color: 0xFF00FF
         }
       ]
     });

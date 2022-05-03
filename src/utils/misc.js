@@ -1,53 +1,71 @@
 const { writeFileSync } = require('fs');
+const { resolve } = require('path');
 
 module.exports = {
   getEmojiIcon(emoji) {
-    if (!emoji) return;
-    
     if (emoji.animated) {
       return `https://cdn.discordapp.com/emojis/${emoji.id}.gif`;
     }
     
     return `https://cdn.discordapp.com/emojis/${emoji.id}.png`;
   },
-  
-  getCamelCase(str) {
-    str = str.toLowerCase();
+
+  punctualJoin(arr) {
+    if (arr.length <= 2) {
+      return arr.join(' and ');
+    }
     
-    str = str.replace(/[^a-zA-Z0-9]+(.)/g, (match, char) => char.toUpperCase());
+    return `${arr.slice(null, -1).join(', ')}, and ${arr[arr.length - 1]}`;
+  },
+  
+  toCamelCase(str) {
+    str = str
+      .toLowerCase()
+      .replace(/[^a-zA-Z0-9]+(.)/g, (match, char) => char.toUpperCase());
     
     return str;
   },
   
   parseTime(time, short = false) {
-    let totalSeconds = time / 1000;
+    const timeUnits = [
+      { name: 'day', short: 'd', count: 86400 },
+      { name: 'hour', short: 'h', count: 3600 },
+      { name: 'minute', short: 'm', count: 60 },
+      { name: 'second', short: 's', count: 1 }
+    ];
+
+    const times = [];
     
-    const weeks = Math.floor(totalSeconds / 604800);
-    totalSeconds %= 604800;
-    const days = Math.floor(totalSeconds / 86400);
-    totalSeconds %= 86400;
-    const hours = Math.floor(totalSeconds / 3600);
-    totalSeconds %= 3600;
-    const minutes = Math.floor(totalSeconds / 60);
-    totalSeconds %= 60;
-    const seconds = Math.floor(totalSeconds);
+    for (let i = 0; i < timeUnits.length; i++) {
+      const unitValue = ~~(time / timeUnits[i].count);
+      const unitFormat = short ? timeUnits[i].short : ` ${timeUnits[i].name}${unitValue === 1 ? '' : 's'}`;
+      
+      if (unitValue) {
+        times.push(`${unitValue}${unitFormat}`);
+      }
+
+      time %= timeUnits[i].count;
+    }
+
+    if (times.length <= 2) {
+      return times.join(' and ');
+    }
     
-    let times = [];
-    
-    if (weeks) times.push(`${weeks}${short ? 'w' : ` week${weeks === 1 ? '' : 's'}`}`);
-    if (days) times.push(`${days}${short ? 'd' : ` day${days === 1 ? '' : 's'}`}`);
-    if (hours) times.push(`${hours}${short ? 'h' : ` hour${hours === 1 ? '' : 's'}`}`);
-    if (minutes) times.push(`${minutes}${short ? 'm' : ` minute${minutes === 1 ? '' : 's'}`}`);
-    if (seconds || (!seconds && !times.length)) times.push(`${seconds}${short ? 's' : ` second${seconds === 1 ? '' : 's'}`}`);
-    
-    return times.join(', ').replace(/(,\s)(?!.*,\s)/, times.length >= 3 ? ', and ' : ' and ');
+    return `${times.slice(null, -1).join(', ')}, and ${times[times.length - 1]}`;
   },
   
-  updateJsonFile(file, data) {
+  updateJsonFile(file, run) {
+    const data = require(resolve(file));
+    
+    run(data);
     writeFileSync(file, JSON.stringify(data, null, 2));
   },
   
-  toCodeBlock(str) {
-    return `\`\`\`${str}\`\`\``;
+  toCodeBlock(str, lang = '') {
+    return `\`\`\`${lang}\n${str}\n\`\`\``;
+  },
+
+  getRandomColor() {
+    return Math.floor(Math.random() * (0xFFFFFF + 1));
   }
 }

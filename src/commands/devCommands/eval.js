@@ -7,32 +7,39 @@ module.exports = new Command({
   triggers: ['eval', 'evaluate'],
   description: 'evaluates inputted code.',
   cooldown: 0,
-  usage: ['<*code>'],
+  usage: ['<code>'],
   permissions: [],
   devOnly: true,
-  async run(message, args, command, client, Discord) {
+  async run(message, args, thisCommand, client, Discord) {
     const code = args.join(' ');
+    const result = new Promise(resolve => resolve(eval(code)));
     
     if (!code) {
-      return await message.reply({ embeds: [client.utils.embeds.error('You must input code to evaluate.')] });
+      return await message.reply({
+        embeds: [
+          client.embeds.error('You must input code to evaluate.')
+        ]
+      });
     }
-    
-    const result = new Promise(resolve => resolve(eval(code)));
         
     return result.then(async output => {
       output = inspect(output, { depth: 0 });
-      output = output.replace(client.token, '<insertTokenHere>');
-      output = output.replace(/^["'](.+(?=["']$))["']$/, '$1');
-      output = client.utils.toCodeBlock(output);
+      output = output
+        .replace(client.token, '[Insert Token Here]')
+        .replace(/^["'](.+(?=["']$))["']$/, '$1');
       
-      await message.channel.send(output);
+      await message.channel.send(client.toCodeBlock(output));
       return await message.delete();
     }).catch(async err => {
-      err = err.toString();
-      err = err.replace(client.token, '<insertTokenHere>');
-      err = `\`${err}\``;
+      err = err
+        .toString()
+        .replace(client.token, '[Insert Token Here]');
       
-      return await message.reply({ embeds: [client.utils.embeds.error(err)] });
+      return await message.reply({
+        embeds: [
+          client.embeds.error(`\`${err}\``)
+        ]
+      });
     });
   }
 });

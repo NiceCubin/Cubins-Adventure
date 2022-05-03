@@ -8,8 +8,8 @@ class Command {
     this.usage = options.usage;
     this.devOnly = options.devOnly;
     this.run = options.run;
-    
     this.name = this.triggers[0];
+    this.disabled = false;
   }
 }
 
